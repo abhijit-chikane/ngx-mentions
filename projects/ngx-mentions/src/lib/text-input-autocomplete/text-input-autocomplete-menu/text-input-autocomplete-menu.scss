@@ -1,0 +1,31 @@
+.flx-selectable-list {
+    position: absolute;
+    background-color: #f9f9f9;
+    z-index: 1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    max-height: 200px;
+}
+
+.flx-selectable-list-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.flx-selectable-list-item:hover {
+    color: #fff;
+    background-color: #3380c4;
+}
+
+.flx-selectable-list-item.active {
+    background-color: #f1f5fa;
+    color: #fff;
+}
+
+.flx-selectable-list-item span {
+    display: inline-block;
+    vertical-align: middle;
+}
