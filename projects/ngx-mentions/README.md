@@ -1,18 +1,18 @@
 
 # Angular @Mentions Component
-**@flxng/mentions**
+**ngx-mentions**
 
 Flexible, lightweight, easy-to-use, without external dependencies - Mentions component for Angular.
 
 ## Getting Started
 Installation:
 ```bash
-$ npm i @ngx/mentions
+$ npm i ngx/mentions
 ```
 
 After importing the module the lib is ready to use:
 ```typescript
-import { MentionsModule } from '@flxng/mentions';
+import { MentionsModule } from 'ngx-mentions';
 
 @NgModule({
   imports: [MentionsModule],
@@ -86,4 +86,4 @@ All suggestions and improvements are welcome and appreciated.
 
 
 ## License
-The [MIT License](https://github.com/abhijitchikane/ngx-mentions/blob/master/LICENSE).
+The [MIT License](https://github.com/abhijitchikane/ngx-mentions/blob/master/projects/ngx-mentions/LICENSE).

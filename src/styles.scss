@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+
+//@import url('https://fonts.googleapis.com/css?family=Lato');
+
+//@import "/app/shared/styles/mixins.scss";
+@import './app/shared/styles/reset.scss';
+@import './app/shared/styles/scrollbar.scss';
+@import './app/shared/styles/common.scss';
+@import './app/shared/styles/colors.scss';
+
+body {
+  //font-family: 'Lato', sans-serif;
+  font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
+}
