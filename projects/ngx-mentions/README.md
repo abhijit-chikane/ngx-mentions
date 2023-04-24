@@ -18,8 +18,11 @@ import { MentionsModule } from 'ngx-mentions';
   imports: [MentionsModule],
   declarations: [],
 })
+
 export class DemoModule {}
 ```
+
+## flx-mentions component
 
 ### @Inputs
 Name | Description | Type | Default
@@ -45,6 +48,20 @@ Name | Description | Output type
 `tagClick` | Called when the area over a tag is clicked. | `TagMouseEvent`
 `tagMouseEnter` | Called when the area over a tag is moused over. | `TagMouseEvent`
 `tagMouseLeave` | Called when the area over the tag has the mouse removed from it. | `TagMouseEvent`
+
+
+## flx-text-input-autocomplete-menu
+
+### @Inputs
+Name | Description | Type | Default
+--- | --- | --- | ---
+`displayLabel` | A function that formats the selected choice once selected. The result (label) is also used as a choice identifier (e.g. when editing choices).  | `(choice: any) => string` | Required
+`choices` | Pre-set choices to show in dropdown. | `any[]` | `[]`
+
+### @Outputs
+Name | Description | Output type
+--- | --- | ---
+`selectChoice` | `choiceSelected` | Called when a choice is selected. | `any`
 
 ### Basic example
 ```html
@@ -74,6 +91,34 @@ Name | Description | Output type
         <span title="{{user.name}}">{{user.name}}</span>
       </li>
     </ul>
+  </ng-template>
+</div>
+```
+
+```html
+<div class="relative-block-container">
+  <textarea cols="42"
+            rows="6"
+            #textareaRef
+            placeholder="Enter '@' and start typing..."
+            [(ngModel)]="text"></textarea>
+
+  <flx-mentions [textInputElement]="textareaRef"
+                [menuTemplate]="menuTemplate"
+                [triggerCharacter]="'@'"
+                [getChoiceLabel]="getChoiceLabel"
+                [searchRegexp]="'^([-&.\\w]+ *){0,3}$'"
+                (search)="loadChoices($event)"
+                (selectedChoicesChange)="onSelectedChoicesChange($event)"
+                (menuShow)="onMenuShow()"
+                (menuHide)="onMenuHide()"></flx-mentions>
+
+  <ng-template #menuTemplate
+               let-selectChoice="selectChoice">
+    <flx-text-input-autocomplete-menu [choices]="choices"
+            [displayLabel]="displayLabel"
+            (selectChoice)="selectChoice($event)">
+    </flx-text-input-autocomplete-menu>
   </ng-template>
 </div>
 ```
