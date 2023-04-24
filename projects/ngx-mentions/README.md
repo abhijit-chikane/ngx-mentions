@@ -7,7 +7,7 @@ Flexible, lightweight, easy-to-use, without external dependencies - Mentions com
 ## Getting Started
 Installation:
 ```bash
-$ npm i ngx/mentions
+$ npm i ngx-mentions
 ```
 
 After importing the module the lib is ready to use:
