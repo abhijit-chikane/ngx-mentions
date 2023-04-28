@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 
-import { NgxMentionsModule } from 'ngx-mentions';
+import { NgxMentionsModule } from '../../projects/ngx-mentions/src/public-api';
 import { FormsModule } from '@angular/forms';
 import { OverviewAComponent } from './overview-a/overview-a.component';
 
@@ -25,4 +25,4 @@ import { OverviewAComponent } from './overview-a/overview-a.component';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

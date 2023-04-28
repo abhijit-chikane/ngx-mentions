@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChoiceWithIndices } from 'ngx-mentions';
+import { ChoiceWithIndices } from '../../projects/ngx-mentions/src/public-api';
 
 
 interface User {
