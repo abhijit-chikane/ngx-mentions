@@ -177,14 +177,16 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   onKeydown(event: KeyboardEvent): void {
     const cursorPosition = this.textInputElement.selectionStart;
     const precedingChar = this.textInputElement.value.charAt(cursorPosition! - 1);
+    const key = event.key;
+
+    this.moveCursorToTagBoundaryIfWithinTag(key, cursorPosition!)
 
     if (event.key === this.triggerCharacter && precedingCharValid(precedingChar)) {
       this.showMenu();
       return;
     }
 
-    const keyCode = event.keyCode || event.charCode;
-    if (keyCode === 8 || keyCode === 46) {
+    if (key === 'Backspace' || key === 'Delete') {
       // backspace or delete
       const cwiToEdit = this._selectedCwis.find((cwi) => {
         const label = this.getChoiceLabel(cwi.choice);
@@ -373,6 +375,20 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     // TODO: editValue to be provided externally?
     const editValue = label.replace(this.triggerCharacter, '');
     this.search.emit(editValue);
+  }
+
+  moveCursorToTagBoundaryIfWithinTag(key: string, cursorPosition: number) {
+    const choiceExists = this._selectedCwis.find((cwi) => {
+      return cwi.indices.start < cursorPosition! + 1 && cwi.indices.end > cursorPosition! - 1
+    });
+
+    if (choiceExists) {
+      // put the cursor at the start or end of the tag while moving cursor
+      if (key === 'ArrowLeft' && choiceExists.indices.end === cursorPosition ||
+        key === 'ArrowRight' && choiceExists.indices.start === cursorPosition) {
+        this.textInputElement.setSelectionRange(choiceExists.indices.start, choiceExists.indices.end);
+      }
+    }
   }
 
   dumpNonExistingChoices(): void {
