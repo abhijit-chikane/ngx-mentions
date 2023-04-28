@@ -87,14 +87,18 @@ button {
     align-items: center;
     justify-content: space-between;
 
-    &:hover {
-      font-weight: bold;
-      background-color: rgba(238, 238, 238, 0.5);
+    &.active {
+      background-color: #e5f0ff;
+      color: #000;
     }
 
-    > span {
+    &:hover {
+      color: #fff;
+      background-color: #3380c4;
+    }
+
+    >span {
       //flex-grow: 0;
-      color: rgba(0, 0, 0, 0.69);
       //font-family: omnes_att_ii_medium;
       text-overflow: ellipsis;
       overflow: hidden;
