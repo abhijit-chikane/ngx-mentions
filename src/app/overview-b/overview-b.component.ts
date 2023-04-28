@@ -8,11 +8,11 @@ interface User {
 }
 
 @Component({
-  selector: 'app-overview-a',
-  templateUrl: './overview-a.component.html',
-  styleUrls: ['./overview-a.component.scss'],
+  selector: 'app-overview-b',
+  templateUrl: './overview-b.component.html',
+  styleUrls: ['./overview-b.component.scss'],
 })
-export class OverviewAComponent implements OnInit {
+export class OverviewBComponent implements OnInit {
   text = ``;
   loading = false;
   choices: User[] = [];
@@ -35,10 +35,6 @@ export class OverviewAComponent implements OnInit {
 
   getChoiceLabel = (user: User): string => {
     return `@${user.name}`;
-  };
-
-  displayLabel = (user: User): string => {
-    return user.name;
   };
 
   onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {

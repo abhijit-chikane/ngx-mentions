@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { NgxMentionsModule } from '../../projects/ngx-mentions/src/public-api';
 import { FormsModule } from '@angular/forms';
 import { OverviewAComponent } from './overview-a/overview-a.component';
+import { OverviewBComponent } from './overview-b/overview-b.component';
 
 @NgModule({
   imports: [
@@ -16,12 +17,16 @@ import { OverviewAComponent } from './overview-a/overview-a.component';
     FormsModule,
     RouterModule.forRoot([
       {
-        path: '',
+        path: 'demo-a',
         component: OverviewAComponent,
       }
     ]),
   ],
-  declarations: [AppComponent, OverviewAComponent],
+  declarations: [
+    AppComponent, 
+    OverviewAComponent,
+    OverviewBComponent,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

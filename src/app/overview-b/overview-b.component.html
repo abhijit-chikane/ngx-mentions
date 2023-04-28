@@ -17,9 +17,13 @@
 
   <ng-template #menuTemplate
     let-selectChoice="selectChoice">
-    <flx-text-input-autocomplete-menu [choices]="choices"
-      [displayLabel]="displayLabel"
-      (selectChoice)="selectChoice($event)">
-    </flx-text-input-autocomplete-menu>
+    <ul class="flx-selectable-list"
+      [class.loader-only]="!choices.length && loading">
+      <li *ngFor="let user of choices"
+        class="flx-selectable-list-item"
+        (click)="selectChoice(user)">
+        <span title="{{user.name}}">{{user.name}}</span>
+      </li>
+    </ul>
   </ng-template>
 </div>
