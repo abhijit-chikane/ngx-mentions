@@ -2,32 +2,32 @@ button {
   cursor: pointer;
 }
 
-.flx-box-shadow {
+.ngx-box-shadow {
   //box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 2px 2px -2px rgba(0, 0, 0, 0.2),
     0px 1px 2px 0px rgba(0, 0, 0, 0.12);
 }
 
-.flx-right-shadow {
+.ngx-right-shadow {
   box-shadow: 5px 0px 5px -2px rgba(0, 0, 0, 0.15);
   //box-shadow: 3px 0px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
-.flx-right-up-shadow {
+.ngx-right-up-shadow {
   box-shadow: 3px 0px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
-.flx-bottom-shadow {
+.ngx-bottom-shadow {
   box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.15);
 }
 
-.flx-text {
+.ngx-text {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 
-.flx-link {
+.ngx-link {
   text-decoration: none;
   cursor: pointer;
   color: #0068ce;
@@ -37,7 +37,7 @@ button {
   }
 }
 
-.flx-input {
+.ngx-input {
   width: 100%;
   border: 1px solid #808080;
   border-radius: 15px;
@@ -52,7 +52,7 @@ button {
   }
 }
 
-.flx-button {
+.ngx-button {
   width: 100%;
   border: 1px solid #808080;
   border-radius: 15px;
@@ -62,21 +62,21 @@ button {
   cursor: pointer;
   outline: none;
 
-  &.flx-button-primary {
+  &.ngx-button-primary {
     background-color: #59abe5;
   }
 }
 
-.flx-input-validation-message {
+.ngx-input-validation-message {
   color: #fe6e6e;
   font-size: 12px;
   margin-left: 5px;
 }
 
-.flx-selectable-list {
+.ngx-selectable-list {
   padding: 0;
 
-  .flx-selectable-list-item {
+  .ngx-selectable-list-item {
     padding-left: 1rem;
     padding-right: 1rem;
     height: 2rem;
@@ -111,7 +111,7 @@ button {
   }
 }
 
-.flx-docs-table {
+.ngx-docs-table {
   border-collapse: collapse;
   min-width: 60%;
   color: #24292e;
@@ -131,7 +131,7 @@ button {
   }
 }
 
-.flx-code {
+.ngx-code {
   padding: 1rem;
   overflow: auto;
   font-size: 85%;
@@ -141,7 +141,7 @@ button {
   letter-spacing: 1px;
   word-spacing: 2px;
 
-  &.flx-code-bash {
+  &.ngx-code-bash {
     &:before {
       content: '$';
       margin-right: 0.4rem;

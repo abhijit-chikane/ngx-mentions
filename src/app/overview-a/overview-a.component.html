@@ -5,7 +5,7 @@
     placeholder="Enter '@' and start typing..."
     [(ngModel)]="text"></textarea>
 
-  <flx-mentions [textInputElement]="textareaRef"
+  <ngx-mentions [textInputElement]="textareaRef"
     [menuTemplate]="menuTemplate"
     [triggerCharacter]="'@'"
     [getChoiceLabel]="getChoiceLabel"
@@ -13,13 +13,13 @@
     (search)="loadChoices($event)"
     (selectedChoicesChange)="onSelectedChoicesChange($event)"
     (menuShow)="onMenuShow()"
-    (menuHide)="onMenuHide()"></flx-mentions>
+    (menuHide)="onMenuHide()"></ngx-mentions>
 
   <ng-template #menuTemplate
     let-selectChoice="selectChoice">
-    <flx-text-input-autocomplete-menu [choices]="choices"
+    <ngx-text-input-autocomplete-menu [choices]="choices"
       [displayLabel]="displayLabel"
       (selectChoice)="selectChoice($event)">
-    </flx-text-input-autocomplete-menu>
+    </ngx-text-input-autocomplete-menu>
   </ng-template>
 </div>

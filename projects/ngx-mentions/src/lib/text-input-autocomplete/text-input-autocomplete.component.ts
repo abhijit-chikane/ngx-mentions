@@ -25,7 +25,7 @@ export interface ChoiceWithIndices {
 }
 
 @Component({
-  selector: 'flx-text-input-autocomplete',
+  selector: 'ngx-text-input-autocomplete',
   templateUrl: './text-input-autocomplete.component.html',
   styleUrls: ['./text-input-autocomplete.component.scss'],
 })

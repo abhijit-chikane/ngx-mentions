@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'flx-text-input-autocomplete-menu',
+  selector: 'ngx-text-input-autocomplete-menu',
   templateUrl: './text-input-autocomplete-menu.html',
   styleUrls: ['./text-input-autocomplete-menu.scss']
 })
@@ -18,7 +18,7 @@ export class TextInputAutocompleteMenuComponent {
 
   @Output() selectChoice = new EventEmitter<any>();
 
-  position: { top: number; left: number };
+  position: { top: number; left: number } | undefined;
   activeChoice: any;
   searchText: string;
   choiceLoadError: any;
@@ -35,7 +35,6 @@ export class TextInputAutocompleteMenuComponent {
 
   @HostListener('document:keydown.ArrowDown', ['$event'])
   onArrowDown(event: KeyboardEvent) {
-    console.log('event', event)
     event.preventDefault();
     const index = this.choices.indexOf(this.activeChoice);
     if (this.choices[index + 1]) {

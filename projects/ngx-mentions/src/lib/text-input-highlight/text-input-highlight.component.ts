@@ -59,7 +59,7 @@ const styleProperties = Object.freeze([
   'MozTabSize',
 ]);
 
-const tagIndexIdPrefix = 'flx-text-highlight-tag-id-';
+const tagIndexIdPrefix = 'ngx-text-highlight-tag-id-';
 
 function indexIsInsideTag(index: number, tag: HighlightTag) {
   return tag.indices.start < index && index < tag.indices.end;
@@ -84,7 +84,7 @@ export interface TagMouseEvent {
 }
 
 @Component({
-  selector: 'flx-text-input-highlight',
+  selector: 'ngx-text-input-highlight',
   templateUrl: './text-input-highlight.component.html',
   styleUrls: ['./text-input-highlight.component.scss'],
   encapsulation: ViewEncapsulation.None,
@@ -151,7 +151,7 @@ export class TextInputHighlightComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnInit(): void {
-    // TODO: flxRelativeContainer directive (wrapping component) instead?
+    // TODO: ngxRelativeContainer directive (wrapping component) instead?
     this.textInputElement.parentElement!.style['position'] = 'relative';
     if (getComputedStyle(this.textInputElement.parentElement!).display === 'inline') {
       // If textarea is direct child of a component (no DIV container)
@@ -287,8 +287,8 @@ export class TextInputHighlightComponent implements OnInit, OnChanges, OnDestroy
           parts.push(escapeHtml(before));
           const cssClass = tag.cssClass || this.tagCssClass;
           const tagId = tagIndexIdPrefix + this.tags.indexOf(tag);
-          // flx-text-highlight-tag-id-${id} is used instead of a data attribute to prevent an angular sanitization warning
-          parts.push(`<span class="flx-text-highlight-tag ${tagId} ${cssClass}">${escapeHtml(tagContents)}</span>`);
+          // ngx-text-highlight-tag-id-${id} is used instead of a data attribute to prevent an angular sanitization warning
+          parts.push(`<span class="ngx-text-highlight-tag ${tagId} ${cssClass}">${escapeHtml(tagContents)}</span>`);
           prevTags.push(tag);
         }
       });
@@ -340,14 +340,14 @@ export class TextInputHighlightComponent implements OnInit, OnChanges, OnDestroy
 
   private onMouseEnter(tag: TagMouseEvent, event: MouseEvent): void {
     tag.event = event;
-    tag.target.classList.add('flx-text-highlight-tag-hovered');
+    tag.target.classList.add('ngx-text-highlight-tag-hovered');
     this.hoveredTag = tag;
     this.tagMouseEnter.emit(tag);
   }
 
   private onMouseLeave(tag: TagMouseEvent, event: MouseEvent): void {
     tag.event = event;
-    tag.target.classList.remove('flx-text-highlight-tag-hovered');
+    tag.target.classList.remove('ngx-text-highlight-tag-hovered');
     this.hoveredTag = undefined;
     this.tagMouseLeave.emit(tag);
   }

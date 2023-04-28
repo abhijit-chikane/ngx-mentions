@@ -1,4 +1,4 @@
-.flx-selectable-list {
+.ngx-selectable-list {
     position: absolute;
     background-color: #f9f9f9;
     z-index: 1;
@@ -8,23 +8,23 @@
     overflow-y: auto;
 }
 
-.flx-selectable-list-item {
+.ngx-selectable-list-item {
     padding: 2px 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.flx-selectable-list-item.active {
+.ngx-selectable-list-item.active {
     background-color: #e5f0ff;
     color: #000;
 }
 
-.flx-selectable-list-item:hover {
+.ngx-selectable-list-item:hover {
     color: #fff;
     background-color: #3380c4;
 }
 
-.flx-selectable-list-item span {
+.ngx-selectable-list-item span {
     display: inline-block;
     vertical-align: middle;
 }

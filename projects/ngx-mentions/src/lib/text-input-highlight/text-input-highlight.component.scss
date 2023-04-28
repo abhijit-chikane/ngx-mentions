@@ -1,10 +1,10 @@
-// .flx-text-input-element {
+// .ngx-text-input-element {
 //   background: none;
 //   position: relative;
 //   z-index: 2;
 // }
 
-.flx-text-highlight-element {
+.ngx-text-highlight-element {
   overflow: hidden;
   word-break: break-word;
   white-space: pre-wrap;
@@ -19,7 +19,7 @@
   z-index: 1;
 }
 
-.flx-text-highlight-tag {
+.ngx-text-highlight-tag {
   padding: 1px 2px;
   margin: -1px -2px;
   border-radius: 6px;
@@ -29,7 +29,7 @@
   font-weight: bold;
   opacity: 0.6;
 
-  &.flx-text-highlight-tag-hovered {
+  &.ngx-text-highlight-tag-hovered {
     opacity: 1;
   }
 }

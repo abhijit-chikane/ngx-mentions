@@ -4,7 +4,7 @@ import { ChoiceWithIndices } from './text-input-autocomplete';
 import { TagMouseEvent } from './text-input-highlight';
 
 @Component({
-  selector: 'flx-mentions',
+  selector: 'ngx-mentions',
   templateUrl: './ngx-mentions.component.html',
 })
 export class NgxMentionsComponent implements OnInit {

@@ -22,7 +22,7 @@ import { MentionsModule } from 'ngx-mentions';
 export class DemoModule {}
 ```
 
-## flx-mentions component
+## ngx-mentions component
 
 ### @Inputs
 Name | Description | Type | Default
@@ -51,7 +51,7 @@ Name | Description | Output type
 `tagMouseLeave` | Called when the area over the tag has the mouse removed from it. | `TagMouseEvent`
 
 
-## flx-text-input-autocomplete-menu
+## ngx-text-input-autocomplete-menu
 
 ### @Inputs
 Name | Description | Type | Default
@@ -73,7 +73,7 @@ Name | Description | Output type
             placeholder="Enter '@' and start typing..."
             [(ngModel)]="text"></textarea>
 
-  <flx-mentions [textInputElement]="textareaRef"
+  <ngx-mentions [textInputElement]="textareaRef"
                 [menuTemplate]="menuTemplate"
                 [triggerCharacter]="'@'"
                 [getChoiceLabel]="getChoiceLabel"
@@ -81,13 +81,13 @@ Name | Description | Output type
                 (search)="loadChoices($event)"
                 (selectedChoicesChange)="onSelectedChoicesChange($event)"
                 (menuShow)="onMenuShow()"
-                (menuHide)="onMenuHide()"></flx-mentions>
+                (menuHide)="onMenuHide()"></ngx-mentions>
 
   <ng-template #menuTemplate
                let-selectChoice="selectChoice">
-    <ul class="flx-selectable-list">
+    <ul class="ngx-selectable-list">
       <li *ngFor="let user of choices"
-          class="flx-selectable-list-item"
+          class="ngx-selectable-list-item"
           (click)="selectChoice(user)">
         <span title="{{user.name}}">{{user.name}}</span>
       </li>
@@ -104,7 +104,7 @@ Name | Description | Output type
             placeholder="Enter '@' and start typing..."
             [(ngModel)]="text"></textarea>
 
-  <flx-mentions [textInputElement]="textareaRef"
+  <ngx-mentions [textInputElement]="textareaRef"
                 [menuTemplate]="menuTemplate"
                 [triggerCharacter]="'@'"
                 [getChoiceLabel]="getChoiceLabel"
@@ -112,14 +112,14 @@ Name | Description | Output type
                 (search)="loadChoices($event)"
                 (selectedChoicesChange)="onSelectedChoicesChange($event)"
                 (menuShow)="onMenuShow()"
-                (menuHide)="onMenuHide()"></flx-mentions>
+                (menuHide)="onMenuHide()"></ngx-mentions>
 
   <ng-template #menuTemplate
                let-selectChoice="selectChoice">
-    <flx-text-input-autocomplete-menu [choices]="choices"
+    <ngx-text-input-autocomplete-menu [choices]="choices"
             [displayLabel]="displayLabel"
             (selectChoice)="selectChoice($event)">
-    </flx-text-input-autocomplete-menu>
+    </ngx-text-input-autocomplete-menu>
   </ng-template>
 </div>
 ```

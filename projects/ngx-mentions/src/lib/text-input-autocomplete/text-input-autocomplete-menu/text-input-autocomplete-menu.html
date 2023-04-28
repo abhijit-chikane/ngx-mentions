@@ -1,12 +1,12 @@
 <ul *ngIf="choices?.length"
     #dropdownMenu
-    class="flx-selectable-list"
+    class="ngx-selectable-list"
     [style.top.px]="position?.top"
     [style.left.px]="position?.left">
     <li *ngFor="let choice of choices"
         [class.active]="activeChoice === choice"
         (click)="selectChoice.emit(choice)"
-        class="flx-selectable-list-item">
+        class="ngx-selectable-list-item">
         <span> {{displayLabel(choice)}} </span>
     </li>
 </ul>
