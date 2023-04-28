@@ -57,6 +57,11 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   @Input() closeMenuOnBlur = false;
 
   /**
+   * Whether to remove whole tag on backspace
+   */
+  @Input() removeWholeTagOnBackspace = false;
+
+  /**
    * Pre-set choices for edit text mode, or to select/mark choices from outside the mentions component.
    */
   @Input() selectedChoices: any[] = [];
@@ -354,6 +359,12 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     this.selectedChoicesChange.emit(this._selectedCwis);
 
     this.textInputElement.focus();
+
+    if (this.removeWholeTagOnBackspace) {
+      this.textInputElement.setSelectionRange(startIndex, endIndex);
+      return;
+    }
+
     this.textInputElement.setSelectionRange(endIndex, endIndex);
 
     this.showMenu();

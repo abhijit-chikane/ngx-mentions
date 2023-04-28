@@ -34,6 +34,11 @@ export class NgxMentionsComponent implements OnInit {
   @Input() closeMenuOnBlur = false;
 
   /**
+   * Whether to remove whole tag on backspace
+   */
+  @Input() removeWholeTagOnBackspace = false;
+
+  /**
    * Selected choices (required in editing mode in order to keep track of choices)
    */
   @Input() selectedChoices: any[] = [];

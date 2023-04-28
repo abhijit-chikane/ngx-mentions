@@ -35,6 +35,7 @@ Name | Description | Type | Default
 `closeMenuOnBlur` | Whether to close the menu when the host `textInputElement` loses focus. | `boolean` | `false`
 `selectedChoices` | Pre-set choices for edit text mode, or to select/mark choices from outside the mentions component. | `any[]` | `[]`
 `tagCssClass` | The CSS class to add to highlighted tags. | `string` | `''`
+`removeWholeTagOnBackspace` | Whether to remove whole tag on backspace. | `boolean` | `false`
 
 ### @Outputs
 Name | Description | Output type
