@@ -4,6 +4,14 @@
 
 Flexible, lightweight, easy-to-use, without external dependencies - Mentions component for Angular.
 
+## Docs and demo
+**[Github Repo](https://github.com/abhijit-chikane/ngx-mentions)** |
+**[Outline of project](https://excalidraw.com/#json=kuodsxz2BZmH5qzIX-4SS,nqDqJQYH0-BixgeyLGkOCw)**
+
+![Mentions GIF](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzNiOTY2YTNlY2U4NjI1NjQ2ODk0ZDMwNDQxMjg5NWFiZGIyZDM5MSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/tobJO5cS7ERoAOoLNz/giphy.gif)
+
+
+
 ## Getting Started
 Installation:
 ```bash
@@ -23,7 +31,6 @@ export class DemoModule {}
 ```
 
 ## ngx-mentions component
-
 ### @Inputs
 Name | Description | Type | Default
 --- | --- | --- | ---
@@ -78,6 +85,36 @@ Name | Description | Output type
                 [triggerCharacter]="'@'"
                 [getChoiceLabel]="getChoiceLabel"
                 [searchRegexp]="'^([-&.\\w]+ *){0,3}$'"
+                [removeWholeTagOnBackspace]="true"
+                (search)="loadChoices($event)"
+                (selectedChoicesChange)="onSelectedChoicesChange($event)"
+                (menuShow)="onMenuShow()"
+                (menuHide)="onMenuHide()"></ngx-mentions>
+
+  <ng-template #menuTemplate
+               let-selectChoice="selectChoice">
+    <ngx-text-input-autocomplete-menu [choices]="choices"
+            [displayLabel]="displayLabel"
+            (selectChoice)="selectChoice($event)">
+    </ngx-text-input-autocomplete-menu>
+  </ng-template>
+</div>
+```
+
+```html
+<div class="relative-block-container">
+  <textarea cols="42"
+            rows="6"
+            #textareaRef
+            placeholder="Enter '@' and start typing..."
+            [(ngModel)]="text"></textarea>
+
+  <ngx-mentions [textInputElement]="textareaRef"
+                [menuTemplate]="menuTemplate"
+                [triggerCharacter]="'@'"
+                [getChoiceLabel]="getChoiceLabel"
+                [searchRegexp]="'^([-&.\\w]+ *){0,3}$'"
+                [removeWholeTagOnBackspace]="true"
                 (search)="loadChoices($event)"
                 (selectedChoicesChange)="onSelectedChoicesChange($event)"
                 (menuShow)="onMenuShow()"
@@ -96,35 +133,16 @@ Name | Description | Output type
 </div>
 ```
 
-```html
-<div class="relative-block-container">
-  <textarea cols="42"
-            rows="6"
-            #textareaRef
-            placeholder="Enter '@' and start typing..."
-            [(ngModel)]="text"></textarea>
+## Author
+Abhijit Chikane
 
-  <ngx-mentions [textInputElement]="textareaRef"
-                [menuTemplate]="menuTemplate"
-                [triggerCharacter]="'@'"
-                [getChoiceLabel]="getChoiceLabel"
-                [searchRegexp]="'^([-&.\\w]+ *){0,3}$'"
-                (search)="loadChoices($event)"
-                (selectedChoicesChange)="onSelectedChoicesChange($event)"
-                (menuShow)="onMenuShow()"
-                (menuHide)="onMenuHide()"></ngx-mentions>
+[Github](https://github.com/abhijit-chikane) | 
+[LinkedIn](https://www.linkedin.com/in/abhijit-chikane/)
 
-  <ng-template #menuTemplate
-               let-selectChoice="selectChoice">
-    <ngx-text-input-autocomplete-menu [choices]="choices"
-            [displayLabel]="displayLabel"
-            (selectChoice)="selectChoice($event)">
-    </ngx-text-input-autocomplete-menu>
-  </ng-template>
-</div>
-```
 
-based on @flxng-mentions
+## Based on
+@flxng-mentions 
+
 More examples [here](https://flxng.codeeve.com/#/mentions).
 
 ## Support

@@ -10,6 +10,7 @@
     [triggerCharacter]="'@'"
     [getChoiceLabel]="getChoiceLabel"
     [searchRegexp]="searchRegexp"
+    [removeWholeTagOnBackspace]="true"
     (search)="loadChoices($event)"
     (selectedChoicesChange)="onSelectedChoicesChange($event)"
     (menuShow)="onMenuShow()"
