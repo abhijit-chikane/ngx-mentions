@@ -5,7 +5,7 @@
 // }
 
 .ngx-text-highlight-element {
-  overflow: hidden;
+  overflow: hidden!important;
   word-break: break-word;
   white-space: pre-wrap;
   position: absolute;
