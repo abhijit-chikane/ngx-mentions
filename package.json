@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "ng build --configuration production --base-href https://abhijit-chikane.github.io/ngx-mentions/"
   },
   "private": true,
   "dependencies": {
