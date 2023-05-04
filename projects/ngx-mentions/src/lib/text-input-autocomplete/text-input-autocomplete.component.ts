@@ -119,7 +119,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     lastCaretPosition?: number;
   };
 
-  constructor(private ngZone: NgZone, private renderer: Renderer2) {}
+  constructor(private ngZone: NgZone, private renderer: Renderer2) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['selectedChoices']) {
@@ -132,30 +132,39 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
          * global change detection events continuously..
          */
         // this.ngZone.runOutsideAngular(() => {
-          setTimeout(() => {
-            const selectedCwisPrevious = JSON.stringify(this._selectedCwis);
+        setTimeout(() => {
+          const selectedCwisPrevious = JSON.stringify(this._selectedCwis);
 
-            this._selectedCwis = this.selectedChoices.map((c) => {
-              return c;
-            });
-            this.updateIndices();
-
-            // Remove choices that index couldn't be found for
-            this._selectedCwis = this._selectedCwis.filter((cwi) => cwi.indices.start > -1);
-
-            if (JSON.stringify(this._selectedCwis) !== selectedCwisPrevious) {
-              // TODO: Should check for indices change only (ignoring the changes inside choice object)
-              // this.ngZone.run(() => {
-                this.selectedChoicesChange.emit(this._selectedCwis);
-              // });
-            }
+          this._selectedCwis = this.selectedChoices.map((c) => {
+            return c;
           });
+          this.updateIndices();
+
+          // Remove choices that index couldn't be found for
+          this._selectedCwis = this._selectedCwis.filter((cwi) => cwi.indices.start > -1);
+
+          if (JSON.stringify(this._selectedCwis) !== selectedCwisPrevious) {
+            // TODO: Should check for indices change only (ignoring the changes inside choice object)
+            // this.ngZone.run(() => {
+            this.selectedChoicesChange.emit(this._selectedCwis);
+            // });
+          }
+        });
         // });
       }
     }
   }
 
   ngOnInit() {
+    // virtual/mobile keyboards, formally known as IME does not support keydown and keyup events
+    // so listen to beforeinput event instead
+    const isMobileKeyboardUsed = window.navigator.maxTouchPoints > 0;
+
+    if (isMobileKeyboardUsed) {
+      const onBeforeInput = this.renderer.listen(this.textInputElement, 'beforeinput', (event) => this.onBeforeInput(event));
+      this._eventListeners.push(onBeforeInput);
+    }
+
     const onKeydown = this.renderer.listen(this.textInputElement, 'keydown', (event) => this.onKeydown(event));
     this._eventListeners.push(onKeydown);
 
@@ -174,6 +183,19 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     this._eventListeners.forEach((unregister) => unregister());
   }
 
+  onBeforeInput(event: any): void {
+    const cursorPosition = this.textInputElement.selectionStart;
+    const precedingChar = this.textInputElement.value.charAt(cursorPosition! - 1);
+    const key = event.data;
+
+    if (key === this.triggerCharacter && precedingCharValid(precedingChar)) {
+      this.showMenu();
+      return;
+    }
+    // TODO: remaining functionality of keydown event 
+    // so that we can skip keydown event and will remove the isMobileKeyboardUsed check 
+  }
+
   onKeydown(event: KeyboardEvent): void {
     const cursorPosition = this.textInputElement.selectionStart;
     const precedingChar = this.textInputElement.value.charAt(cursorPosition! - 1);
@@ -181,7 +203,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
 
     this.moveCursorToTagBoundaryIfWithinTag(key, cursorPosition!)
 
-    if (event.key === this.triggerCharacter && precedingCharValid(precedingChar)) {
+    if (key === this.triggerCharacter && precedingCharValid(precedingChar)) {
       this.showMenu();
       return;
     }
