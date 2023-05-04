@@ -1,5 +1,6 @@
 .relative-block-container {
   position: relative;
+  width: min-content;
 
   textarea {
     outline: none;
