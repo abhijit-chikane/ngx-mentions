@@ -107,6 +107,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   private _selectedCwis: ChoiceWithIndices[] = [];
   private _dumpedCwis: ChoiceWithIndices[] = [];
   private _editingCwi: ChoiceWithIndices;
+  private _cursorPosition: number;
 
   menuCtrl?: {
     template: TemplateRef<any>;
@@ -197,11 +198,11 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   }
 
   onKeydown(event: KeyboardEvent): void {
-    const cursorPosition = this.textInputElement.selectionStart;
-    const precedingChar = this.textInputElement.value.charAt(cursorPosition! - 1);
+    this._cursorPosition = this.textInputElement.selectionStart!;
+    const precedingChar = this.textInputElement.value.charAt(this._cursorPosition - 1);
     const key = event.key;
 
-    this.moveCursorToTagBoundaryIfWithinTag(key, cursorPosition!)
+    this.moveCursorToTagBoundaryIfWithinTag(key, this._cursorPosition)
 
     if (key === this.triggerCharacter && precedingCharValid(precedingChar)) {
       this.showMenu();
@@ -211,9 +212,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     if (key === 'Backspace' || key === 'Delete') {
       // backspace or delete
       const cwiToEdit = this._selectedCwis.find((cwi) => {
-        const label = this.getChoiceLabel(cwi.choice);
-        const labelEndIndex = this.getChoiceIndex(label) + label.length;
-        return cursorPosition === labelEndIndex;
+        return cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition;
       });
 
       if (cwiToEdit) {
@@ -375,10 +374,12 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
 
   editChoice(choice: any): void {
     const label = this.getChoiceLabel(choice);
-    const startIndex = this.getChoiceIndex(label);
+    const occurence = this.getOccurrenceBasedOnCursorPos();
+    const startIndex = this.getChoiceIndex(label, occurence);
     const endIndex = startIndex + label.length;
 
-    this._editingCwi = this._selectedCwis.find((cwi) => this.getChoiceLabel(cwi.choice) === label)!;
+    this._editingCwi = this._selectedCwis.find((cwi) => this.getChoiceLabel(cwi.choice) === label &&
+      (cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition))!;
     this.removeFromSelected(this._editingCwi);
     this.selectedChoicesChange.emit(this._selectedCwis);
 
@@ -444,17 +445,12 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   }
 
   addToSelected(cwi: ChoiceWithIndices): void {
-    const exists = this._selectedCwis.some(
-      (scwi) => this.getChoiceLabel(scwi.choice) === this.getChoiceLabel(cwi.choice)
-    );
 
-    if (!exists) {
-      this._selectedCwis.push(cwi);
-      this.choiceSelected.emit(cwi);
-    }
+    this._selectedCwis.push(cwi);
+    this.choiceSelected.emit(cwi);
   }
 
-  removeFromSelected(cwi: ChoiceWithIndices): void {
+  removeFromSelected(cwi: ChoiceWithIndices, occurence?: number): void {
     const exists = this._selectedCwis.some(
       (scwi) => this.getChoiceLabel(scwi.choice) === this.getChoiceLabel(cwi.choice)
     );
@@ -486,17 +482,23 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     return parseFloat(lineHeightStr);
   }
 
-  getChoiceIndex(label: string): number {
+  getChoiceIndex(label: string, occurence?: number): number {
     const text = this.textInputElement && this.textInputElement.value;
     const labels = this._selectedCwis.map((cwi) => this.getChoiceLabel(cwi.choice));
 
-    return getChoiceIndex(text, label, labels);
+    return getChoiceIndex(text, label, labels, occurence);
   }
 
   updateIndices(): void {
+    const occOfUniqueLabels: Record<string, number> = {}
     this._selectedCwis = this._selectedCwis.map((cwi) => {
       const label = this.getChoiceLabel(cwi.choice);
-      const index = this.getChoiceIndex(label);
+      if (!occOfUniqueLabels[label]) {
+        occOfUniqueLabels[label] = 1;
+      } else {
+        occOfUniqueLabels[label]++;
+      }
+      const index = this.getChoiceIndex(label, occOfUniqueLabels[label]);
       return {
         choice: cwi.choice,
         indices: {
@@ -506,9 +508,32 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
       };
     });
   }
+
+  getOccurrenceBasedOnCursorPos(): number {
+    // Sort the choices array in descending order of start index
+    let choices = this._selectedCwis.slice().sort((a, b) => b.indices.start - a.indices.start);
+    // Iterate over the sorted choices array
+    for (let i = 0; i < choices.length; i++) {
+      const choice = choices[i];
+      // Check if the start index of the current choice is less than or equal to the cursor position
+      if (choice.indices.start <= this._cursorPosition) {
+        let occurrenceCount = 1;
+        // Iterate over the remaining choices in the array and count occurrences of the current choice
+        for (let j = i + 1; j < choices.length; j++) {
+          if (choices[j].choice.name === choice.choice.name) {
+            occurrenceCount++;
+          }
+        }
+        // Return the occurrence count
+        return occurrenceCount;
+      }
+    }
+    // If no match is found, return 0
+    return 0;
+  }
 }
 
-export function getChoiceIndex(text: string, label: string, labels: string[]): number {
+export function getChoiceIndex(text: string, label: string, labels: string[], occurence?: number): number {
   text = text || '';
 
   labels.forEach((l) => {
@@ -524,7 +549,7 @@ export function getChoiceIndex(text: string, label: string, labels: string[]): n
     // (avoid 'labels' found in e.g. links being mistaken for choices)
     const precedingChar = text[startIndex - 1];
     return precedingCharValid(precedingChar) || text.slice(startIndex - 4, startIndex) === '<br>';
-  });
+  }, occurence);
 }
 
 export function precedingCharValid(char: string): boolean {
@@ -535,9 +560,18 @@ export function precedingCharValid(char: string): boolean {
 export function findStringIndex(
   text: string,
   value: string,
-  callback: (startIndex: number, endIndex: number) => boolean
+  callback: (startIndex: number, endIndex: number) => boolean,
+  occurence?: number
 ): number {
-  let index = text.indexOf(value);
+  let index = -1;
+  if (occurence) {
+    for (let i = 0; i < occurence; i++) {
+      index = text.indexOf(value, index + 1);
+      if (index === -1) break;
+    }
+  } else {
+    index = text.indexOf(value);
+  }
   if (index === -1) {
     return -1;
   }
