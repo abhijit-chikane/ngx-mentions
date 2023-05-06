@@ -78,6 +78,7 @@ Name | Description | Output type
 <div class="relative-block-container">
   <textarea cols="42"
             rows="6"
+            wrap="hard"
             #textareaRef
             placeholder="Enter '@' and start typing..."
             [(ngModel)]="text"></textarea>
@@ -107,6 +108,7 @@ Name | Description | Output type
 <div class="relative-block-container">
   <textarea cols="42"
             rows="6"
+            wrap="hard"
             #textareaRef
             placeholder="Enter '@' and start typing..."
             [(ngModel)]="text"></textarea>
