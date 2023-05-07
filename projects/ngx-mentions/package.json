@@ -1,7 +1,7 @@
 {
   "name": "ngx-mentions",
   "description": "Mentions component for Angular.",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "license": "MIT",
   "author": "Abhijit Chikane",
   "repository": {
