@@ -295,7 +295,7 @@ export class TextInputHighlightComponent implements OnInit, OnChanges, OnDestroy
     const remainingIndex = prevTags.length > 0 ? prevTags[prevTags.length - 1].indices.end : 0;
     const remaining = textInputValue.slice(remainingIndex);
     parts.push(escapeHtml(remaining));
-    parts.push('&nbsp;');
+    parts.push(' ');
     this.highlightedText = parts.join('');
     this.cdr.detectChanges();
 
