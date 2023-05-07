@@ -5,7 +5,7 @@
 Flexible, lightweight, easy-to-use, without external dependencies - Mentions component for Angular.
 
 ## Docs and demo
-https://abhijit-chikane.github.io/ngx-mentions/
+**[Click here for a Demo](https://abhijit-chikane.github.io/ngx-mentions/)**
 
 **[Github Repo](https://github.com/abhijit-chikane/ngx-mentions)** |
 **[Project Outline](https://excalidraw.com/#json=kuodsxz2BZmH5qzIX-4SS,nqDqJQYH0-BixgeyLGkOCw)**
