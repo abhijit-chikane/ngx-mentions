@@ -26,8 +26,9 @@ export class OverviewAComponent implements OnInit {
     const users = await this.getUsers();
 
     this.choices = users.filter((user) => {
-      const alreadyExists = this.mentions.some((m) => m.choice.name === user.name);
-      return !alreadyExists && user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+      // const alreadyExists = this.mentions.some((m) => m.choice.name === user.name);
+      return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+      // && !alreadyExists;
     });
 
     return this.choices;
