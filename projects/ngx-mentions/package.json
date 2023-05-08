@@ -1,6 +1,6 @@
 {
   "name": "ngx-mentions",
-  "version": "11.0.0",
+  "version": "12.0.0",
   "description": "Mentions component for Angular.",
   "license": "MIT",
   "author": "Abhijit Chikane",
@@ -20,8 +20,8 @@
     "autocomplete"
   ],
   "peerDependencies": {
-    "@angular/common": "~11.2.14 || >=12.0.0",
-    "@angular/core": "~11.2.14 || >=12.0.0"
+    "@angular/common": "~12.2.17 || >=13.0.0",
+    "@angular/core": "~12.2.17 || >=13.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
