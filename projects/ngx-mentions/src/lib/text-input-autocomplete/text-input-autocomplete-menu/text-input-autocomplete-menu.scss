@@ -18,12 +18,12 @@
         align-items: center;
         height: 2rem;
 
-        &.active {
-            background-color: #e5f0ff;
+        &:hover {
             color: #000;
+            background-color: #e5f0ff;
         }
 
-        &:hover {
+        &.active {
             color: #fff;
             background-color: #3380c4;
         }
