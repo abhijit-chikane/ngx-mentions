@@ -1,0 +1,35 @@
+// .ngx-text-input-element {
+//   background: none;
+//   position: relative;
+//   z-index: 2;
+// }
+
+.ngx-text-highlight-element {
+  overflow: hidden!important;
+  word-break: break-word;
+  white-space: pre-wrap;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  background: transparent;
+  color: rgba(0, 0, 0, 0);
+  z-index: 1;
+}
+
+.ngx-text-highlight-tag {
+  padding: 1px 2px;
+  margin: -1px -2px;
+  border-radius: 6px;
+  overflow-wrap: break-word;
+  background-color: #e1f2fe;
+  color: #a8d3fe;
+  font-weight: bold;
+  opacity: 0.6;
+
+  &.ngx-text-highlight-tag-hovered {
+    opacity: 1;
+  }
+}

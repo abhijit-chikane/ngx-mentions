@@ -105,6 +105,46 @@
           }
         }
       }
+    },
+    "ngx-mentions": {
+      "projectType": "library",
+      "root": "projects/ngx-mentions",
+      "sourceRoot": "projects/ngx-mentions/src",
+      "prefix": "ngx",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-mentions/tsconfig.lib.json",
+            "project": "projects/ngx-mentions/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-mentions/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-mentions/src/test.ts",
+            "tsConfig": "projects/ngx-mentions/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-mentions/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-mentions/tsconfig.lib.json",
+              "projects/ngx-mentions/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }},
   "defaultProject": "ngx-mentions-demo"
 }

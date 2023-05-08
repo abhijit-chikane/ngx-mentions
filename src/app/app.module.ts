@@ -1,18 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-
+import { FormsModule } from '@angular/forms';
+import { OverviewAComponent } from './overview-a/overview-a.component';
+import { OverviewBComponent } from './overview-b/overview-b.component';
+import { NgxMentionsModule } from 'ngx-mentions';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    OverviewAComponent,
+    OverviewBComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
-    AppRoutingModule
+    NgxMentionsModule,
+    FormsModule,
+    RouterModule.forRoot([]),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

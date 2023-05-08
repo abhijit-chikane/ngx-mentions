@@ -1,0 +1,33 @@
+.ngx-selectable-list {
+  padding: 0;
+
+  .ngx-selectable-list-item {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    height: 2rem;
+    min-width: 10rem;
+    background-color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.active {
+      background-color: #3380c4;
+      color: #fff;
+    }
+
+    &:hover {
+      color: #000;
+      background-color: #e5f0ff;
+    }
+
+    >span {
+      //flex-grow: 0;
+      //font-family: omnes_att_ii_medium;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}

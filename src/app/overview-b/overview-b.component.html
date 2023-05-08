@@ -1,0 +1,33 @@
+<div class="relative-block-container">
+  <textarea cols="36"
+    rows="6"
+    wrap="hard"
+    #textareaRef
+    placeholder="Enter '@' and start typing..."
+    [(ngModel)]="text"></textarea>
+
+  <ngx-mentions [textInputElement]="textareaRef"
+    [menuTemplate]="menuTemplate"
+    [triggerCharacter]="'@'"
+    [getChoiceLabel]="getChoiceLabel"
+    [searchRegexp]="searchRegexp"
+    [removeWholeTagOnBackspace]="true"
+    (search)="loadChoices($event)"
+    (selectedChoicesChange)="onSelectedChoicesChange($event)"
+    (menuShow)="onMenuShow()"
+    (menuHide)="onMenuHide()"></ngx-mentions>
+
+  <ng-template #menuTemplate
+    let-selectChoice="selectChoice">
+    <ul class="ngx-selectable-list"
+      [class.loader-only]="!choices.length && loading">
+      <li *ngFor="let user of choices"
+        class="ngx-selectable-list-item"
+        (click)="selectChoice(user)">
+        <span title="{{user.name}}">{{user.name}}</span>
+      </li>
+    </ul>
+  </ng-template>
+
+  <h4> Custom text input autocomplete menu</h4>
+</div>

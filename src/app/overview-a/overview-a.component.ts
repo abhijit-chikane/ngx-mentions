@@ -1,54 +1,45 @@
 import { Component, OnInit } from '@angular/core';
-import { ChoiceWithIndices } from '../../projects/ngx-mentions/src/public-api';
 
+import { ChoiceWithIndices } from 'ngx-mentions';
 
 interface User {
   id: number;
   name: string;
 }
-declare const gtag: Function;
 
 @Component({
-  selector: 'app-root',
-  template: `
-    <router-outlet></router-outlet>
-    <div class="github-repo">
-        <a href="https://github.com/abhijit-chikane/ngx-mentions">Github Repo</a>
-    </div>
-    <div class="demo-container">
-        <div>
-            <app-overview-a></app-overview-a>
-        </div>
-        <div>
-            <app-overview-b></app-overview-b>
-        </div>
-    </div>
-  `,
-  styleUrls: ['./app.component.scss']
+  selector: 'app-overview-a',
+  templateUrl: './overview-a.component.html',
+  styleUrls: ['./overview-a.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class OverviewAComponent implements OnInit {
   text = ``;
   loading = false;
   choices: User[] = [];
   mentions: ChoiceWithIndices[] = [];
+  searchRegexp = new RegExp('^([-&.\\w]+ *){0,3}$');
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() { }
+  ngOnInit() {}
 
   async loadChoices(searchTerm: string): Promise<User[]> {
     const users = await this.getUsers();
 
     this.choices = users.filter((user) => {
-      const alreadyExists = this.mentions.some((m) => m.choice.name === user.name);
-      return !alreadyExists && user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+      // const alreadyExists = this.mentions.some((m) => m.choice.name === user.name);
+      return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+      // && !alreadyExists;
     });
 
     return this.choices;
   }
 
   getChoiceLabel = (user: User): string => {
-    return `#${user.name}`;
+    return `@${user.name}`;
+  };
+
+  displayLabel = (user: User): string => {
+    return user.name;
   };
 
   onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {

@@ -1,0 +1,29 @@
+{
+  "name": "ngx-mentions",
+  "version": "1.0.22",
+  "description": "Mentions component for Angular.",
+  "license": "MIT",
+  "author": "Abhijit Chikane",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abhijit-chikane/ngx-mentions"
+  },
+  "homepage": "",
+  "keywords": [
+    "angular-mentions",
+    "angular",
+    "javascript",
+    "typescript",
+    "component",
+    "mentions",
+    "input-highlight",
+    "autocomplete"
+  ],
+  "peerDependencies": {
+    "@angular/common": "^9.1.13",
+    "@angular/core": "^9.1.13"
+  },
+  "dependencies": {
+    "tslib": "^1.10.0"
+  }
+}

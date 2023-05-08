@@ -1,40 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { ChoiceWithIndices } from '../../projects/ngx-mentions/src/public-api';
 
+import { ChoiceWithIndices } from 'ngx-mentions';
 
 interface User {
   id: number;
   name: string;
 }
-declare const gtag: Function;
 
 @Component({
-  selector: 'app-root',
-  template: `
-    <router-outlet></router-outlet>
-    <div class="github-repo">
-        <a href="https://github.com/abhijit-chikane/ngx-mentions">Github Repo</a>
-    </div>
-    <div class="demo-container">
-        <div>
-            <app-overview-a></app-overview-a>
-        </div>
-        <div>
-            <app-overview-b></app-overview-b>
-        </div>
-    </div>
-  `,
-  styleUrls: ['./app.component.scss']
+  selector: 'app-overview-b',
+  templateUrl: './overview-b.component.html',
+  styleUrls: ['./overview-b.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class OverviewBComponent implements OnInit {
   text = ``;
   loading = false;
   choices: User[] = [];
   mentions: ChoiceWithIndices[] = [];
+  searchRegexp = new RegExp('^([-&.\\w]+ *){0,3}$');
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() { }
+  ngOnInit() {}
 
   async loadChoices(searchTerm: string): Promise<User[]> {
     const users = await this.getUsers();
@@ -48,7 +34,7 @@ export class AppComponent implements OnInit {
   }
 
   getChoiceLabel = (user: User): string => {
-    return `#${user.name}`;
+    return `@${user.name}`;
   };
 
   onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {

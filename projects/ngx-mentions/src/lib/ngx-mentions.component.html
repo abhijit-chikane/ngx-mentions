@@ -1,0 +1,21 @@
+<ngx-text-input-autocomplete [textInputElement]="textInputElement"
+    [menuTemplate]="menuTemplate"
+    [triggerCharacter]="triggerCharacter"
+    [searchRegexp]="searchRegexp"
+    [closeMenuOnBlur]="closeMenuOnBlur"
+    [removeWholeTagOnBackspace]="removeWholeTagOnBackspace"
+    [getChoiceLabel]="getChoiceLabel"
+    [selectedChoices]="selectedChoices"
+    (search)="search.emit($event)"
+    (choiceSelected)="choiceSelected.emit($event)"
+    (choiceRemoved)="choiceRemoved.emit($event)"
+    (selectedChoicesChange)="onSelectedChoicesChange($event)"
+    (menuShow)="menuShow.emit()"
+    (menuHide)="menuHide.emit()"></ngx-text-input-autocomplete>
+
+<ngx-text-input-highlight [textInputElement]="textInputElement"
+    [tags]="selectedCwis"
+    [tagCssClass]="tagCssClass"
+    (tagClick)="tagClick.emit($event)"
+    (tagMouseEnter)="tagMouseEnter.emit($event)"
+    (tagMouseLeave)="tagMouseLeave.emit($event)"></ngx-text-input-highlight>
