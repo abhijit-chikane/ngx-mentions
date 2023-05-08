@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TextInputHighlightComponent } from './text-input-highlight.component';
 
@@ -6,7 +6,7 @@ describe('TextInputHighlightComponent', () => {
   let component: TextInputHighlightComponent;
   let fixture: ComponentFixture<TextInputHighlightComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TextInputHighlightComponent ]
     })
