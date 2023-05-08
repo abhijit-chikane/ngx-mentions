@@ -137,6 +137,6 @@
           }
         }
       }
-    }},
-  "defaultProject": "ngx-mentions-demo"
+    }
+  }
 }
