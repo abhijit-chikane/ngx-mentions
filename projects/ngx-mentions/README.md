@@ -7,6 +7,8 @@ Flexible, lightweight, easy-to-use, without external dependencies - Mentions com
 ## Docs and demo
 **[Click here for a Demo](https://abhijit-chikane.github.io/ngx-mentions/)**
 
+**[Stackblitz working example](https://angular-nuutsm.stackblitz.io)**
+
 **[Github Repo](https://github.com/abhijit-chikane/ngx-mentions)**
 
 ![Mentions GIF](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzNiOTY2YTNlY2U4NjI1NjQ2ODk0ZDMwNDQxMjg5NWFiZGIyZDM5MSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/tobJO5cS7ERoAOoLNz/giphy.gif)
