@@ -130,10 +130,8 @@ export function getCaretCoordinates(element, position, options: any = {}) {
   span.textContent = element.value.substring(position) || '.'; // || because a completely empty faux span doesn't render at all
   div.appendChild(span);
   
-  const calcTop = span.offsetTop + parseInt(computed['borderTopWidth'], 10);
-  
   const coordinates = {
-    top: Math.min(calcTop, element.clientHeight - 20),
+    top: span.offsetTop + parseInt(computed['borderTopWidth'], 10),
     left: span.offsetLeft + parseInt(computed['borderLeftWidth'], 10),
     height: parseInt(computed['lineHeight'], 10),
   };
