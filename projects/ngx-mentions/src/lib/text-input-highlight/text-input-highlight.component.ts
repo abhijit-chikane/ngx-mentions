@@ -133,7 +133,7 @@ export class TextInputHighlightComponent implements OnInit, OnChanges, OnDestroy
   private textareaEventListeners: Array<() => void> = [];
   private highlightTagElements: Array<{
     element: HTMLElement;
-    clientRect: ClientRect;
+    clientRect: DOMRect;
   }>;
   private hoveredTag: TagMouseEvent | undefined;
   private isDestroyed = false;
