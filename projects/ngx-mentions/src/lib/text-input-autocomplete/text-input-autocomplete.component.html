@@ -1,5 +1,6 @@
 <div *ngIf="menuCtrl"
-     class="menu-template-container"
-     [style.top]="menuCtrl.position.top + 'px'"
-     [style.left]="menuCtrl.position.left + 'px'">
-  <ng-container *ngTemplateOutlet="menuTemplate; context: menuCtrl.context"></ng-container>
+      #dropdownMenu
+      class="menu-template-container"
+      [style.top]="menuCtrl.position.top + 'px'"
+      [style.left]="menuCtrl.position.left + 'px'">
+      <ng-container *ngTemplateOutlet="menuTemplate; context: menuCtrl.context"></ng-container>
