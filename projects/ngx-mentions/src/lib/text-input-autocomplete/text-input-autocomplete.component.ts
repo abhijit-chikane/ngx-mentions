@@ -1,5 +1,6 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   NgZone,
@@ -10,6 +11,7 @@ import {
   Renderer2,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 
 import { getCaretCoordinates } from './textarea-caret-position';
@@ -30,6 +32,8 @@ export interface ChoiceWithIndices {
   styleUrls: ['./text-input-autocomplete.component.scss'],
 })
 export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDestroy {
+  @ViewChild('dropdownMenu', { read: ElementRef }) dropdownMenu: ElementRef;
+
   /**
    * Reference to the text input element.
    */
@@ -272,7 +276,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     this.menuCtrl.lastCaretPosition = this.textInputElement.selectionStart!;
 
     if (this.closeMenuOnBlur) {
-      this.hideMenu();
+      setTimeout(() => this.hideMenu(), 250);
     }
   }
 
@@ -322,8 +326,10 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     }
 
     const lineHeight = this.getLineHeight(this.textInputElement);
-    const { top, left } = getCaretCoordinates(this.textInputElement, this.textInputElement.selectionStart);
+    let { top, left } = getCaretCoordinates(this.textInputElement, this.textInputElement.selectionStart);
 
+  // to position the list correctly
+    top = Math.min(top, this.textInputElement.clientHeight - 20);
     this.menuCtrl = {
       template: this.menuTemplate,
       context: {
@@ -340,6 +346,17 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     };
 
     this.menuShow.emit();
+
+    setTimeout(() => {
+      const bounds: DOMRect = this.dropdownMenu.nativeElement.getBoundingClientRect();
+      // if off right of page, align right
+      if (bounds.left + bounds.width + 25 > window.innerWidth) {
+        left -= bounds.left + bounds.width - window.innerWidth + 20;
+      }
+
+      this.menuCtrl.position.left = left;
+    }, 0);
+
   }
 
   selectChoice = (choice: any) => {
