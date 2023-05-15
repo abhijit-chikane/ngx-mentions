@@ -1,5 +1,4 @@
 .ngx-selectable-list {
-    position: absolute;
     padding: 0;
     margin: 8px 0;
     background-color: #f9f9f9;
@@ -7,16 +6,17 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    max-height: 400px;
+    overflow: auto;
 
     .ngx-selectable-list-item {
         padding: 2px 16px;
         cursor: pointer;
         transition: background-color 0.3s ease;
-        min-width: 10rem;
         background-color: #ffffff;
         display: flex;
         align-items: center;
-        height: 2rem;
+        height: 30px;
 
         &:hover {
             color: #000;
@@ -36,16 +36,6 @@
             white-space: nowrap;
             display: inline-block;
             vertical-align: middle;
-        }
-
-        &:hover {
-            color: #fff;
-            background-color: #3380c4;
-        }
-
-        &.active {
-            background-color: #e5f0ff;
-            color: #000;
         }
     }
 }
