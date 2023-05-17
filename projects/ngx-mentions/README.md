@@ -36,16 +36,16 @@ export class DemoModule {}
 
 Latest version available for each version of Angular
 
-| ngx-mentions | Angular     |
-| ------------ | ----------- |
-| 9.x          | 9           |
-| 10.x         | 10          |
-| 11.x         | 11          |
-| 12.x         | 12          |
-| 13.x         | 13          |
-| 14.x         | 14          |
-| 15.x         | 15          |
-| 16.x         | 16 || >16   |
+| ngx-mentions | Angular       |
+| ------------ | -----------   |
+| 9.x          | >=9           |
+| 10.x         | >=10          |
+| 11.x         | >=11          |
+| 12.x         | >=12          |
+| 13.x         | >=13          |
+| 14.x         | >=14          |
+| 15.x         | >=15          |
+| 16.x         | >=16          |
 
 ## ngx-mentions component
 ### @Inputs
