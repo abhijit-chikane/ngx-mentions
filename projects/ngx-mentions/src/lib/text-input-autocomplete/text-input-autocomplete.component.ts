@@ -329,7 +329,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     const lineHeight = this.getLineHeight(this.textInputElement);
     let { top, left } = getCaretCoordinates(this.textInputElement, this.textInputElement.selectionStart);
 
-  // to position the list correctly
+    // to position the list correctly
     top = Math.min(top, this.textInputElement.clientHeight - 20);
     this.menuCtrl = {
       template: this.menuTemplate,
@@ -358,8 +358,6 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
           this.changeDetectorRef.detectChanges();
         } 
       }
-
-      this.menuCtrl.position.left = left;
     }, 0);
   }
 
