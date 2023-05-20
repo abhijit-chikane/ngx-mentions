@@ -355,7 +355,13 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
           left -= bounds.left + bounds.width - window.innerWidth + 20;
         }
 
-        this.menuCtrl.position.left = left;
+        this.menuCtrl = {
+          ...this.menuCtrl,
+          position: {
+            ...this.menuCtrl.position,
+            left
+          }
+        };
       }
     }, 0);
 
