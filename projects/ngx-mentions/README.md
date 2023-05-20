@@ -7,10 +7,11 @@ Flexible, lightweight, easy-to-use, without external dependencies - Mentions com
 ## Docs and demo
 **[Click here for a Demo](https://abhijit-chikane.github.io/ngx-mentions/)**
 
+**[Stackblitz working example](https://stackblitz.com/edit/ngx-mentions?file=src/main.ts)**
+
 **[Github Repo](https://github.com/abhijit-chikane/ngx-mentions)**
 
 ![Mentions GIF](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzNiOTY2YTNlY2U4NjI1NjQ2ODk0ZDMwNDQxMjg5NWFiZGIyZDM5MSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/tobJO5cS7ERoAOoLNz/giphy.gif)
-
 
 
 ## Getting Started
@@ -30,6 +31,21 @@ import { MentionsModule } from 'ngx-mentions';
 
 export class DemoModule {}
 ```
+
+## Compatibility
+
+Latest version available for each version of Angular
+
+| ngx-mentions | Angular       |
+| ------------ | -----------   |
+| 9.x          | >=9           |
+| 10.x         | >=10          |
+| 11.x         | >=11          |
+| 12.x         | >=12          |
+| 13.x         | >=13          |
+| 14.x         | >=14          |
+| 15.x         | >=15          |
+| 16.x         | >=16          |
 
 ## ngx-mentions component
 ### @Inputs
