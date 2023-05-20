@@ -1,0 +1,42 @@
+name: Cherry Pick Merge Commit
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  cherry-pick:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+        
+      - name: Pull latest changes
+        run: git pull origin master
+        
+      - name: Cherry-pick merge commit
+        run: |
+          # Extract the merge commit SHA
+          commit_sha=$(git rev-parse ${{ github.event.pull_request.head.sha }})
+          
+          # Create a new branch for cherry-picking
+          git checkout -b cherry-pick-branch
+          
+          # Cherry-pick the merge commit
+          git cherry-pick -m 1 $commit_sha
+          
+          # Push the changes to the ngx-mentions_v16 branch
+          git push origin cherry-pick-branch:ngx-mentions_v16
+          
+      - name: Build ngx-mentions
+        run: ng build ngx-mentions --configuration production
+        
+      - name: Change to dist/ngx-mentions directory
+        run: cd dist/ngx-mentions
+        
+      - name: Publish ngx-mentions
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: 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
