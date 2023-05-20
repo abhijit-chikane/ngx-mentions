@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -124,7 +125,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     lastCaretPosition?: number;
   };
 
-  constructor(private ngZone: NgZone, private renderer: Renderer2) { }
+  constructor(private ngZone: NgZone, private renderer: Renderer2, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['selectedChoices']) {
@@ -348,15 +349,16 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     this.menuShow.emit();
 
     setTimeout(() => {
-      const bounds: DOMRect = this.dropdownMenu.nativeElement.getBoundingClientRect();
-      // if off right of page, align right
-      if (bounds.left + bounds.width + 25 > window.innerWidth) {
-        left -= bounds.left + bounds.width - window.innerWidth + 20;
+      if (this.dropdownMenu && this.dropdownMenu.nativeElement) {
+        const bounds: DOMRect = this.dropdownMenu.nativeElement.getBoundingClientRect();
+        // if off right of page, align right
+        if (bounds.left + bounds.width + 25 > window.innerWidth) {
+          left -= bounds.left + bounds.width - window.innerWidth + 20;
+          this.menuCtrl.position.left = left;
+          this.changeDetectorRef.detectChanges();
+        } 
       }
-
-      this.menuCtrl.position.left = left;
     }, 0);
-
   }
 
   selectChoice = (choice: any) => {
