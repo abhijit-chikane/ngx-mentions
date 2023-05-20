@@ -348,10 +348,20 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     this.menuShow.emit();
 
     setTimeout(() => {
-      const bounds: DOMRect = this.dropdownMenu.nativeElement.getBoundingClientRect();
-      // if off right of page, align right
-      if (bounds.left + bounds.width + 25 > window.innerWidth) {
-        left -= bounds.left + bounds.width - window.innerWidth + 20;
+      if (this.dropdownMenu && this.dropdownMenu.nativeElement) {
+        const bounds: DOMRect = this.dropdownMenu.nativeElement.getBoundingClientRect();
+        // if off right of page, align right
+        if (bounds.left + bounds.width + 25 > window.innerWidth) {
+          left -= bounds.left + bounds.width - window.innerWidth + 20;
+        }
+
+        this.menuCtrl = {
+          ...this.menuCtrl,
+          position: {
+            ...this.menuCtrl.position,
+            left
+          }
+        };
       }
 
       this.menuCtrl.position.left = left;
