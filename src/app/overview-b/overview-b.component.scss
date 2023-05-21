@@ -15,6 +15,15 @@
     &.loader-only {
       height: 2rem;
     }
+
+    li:hover {
+      background-color: #ffcfff;
+    }
+
+    .active {
+      color: #fff;
+      background-color: purple;
+    }
   }
 
   .loader {

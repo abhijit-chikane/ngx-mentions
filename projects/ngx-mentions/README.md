@@ -22,10 +22,10 @@ $ npm i ngx-mentions
 
 After importing the module the lib is ready to use:
 ```typescript
-import { MentionsModule } from 'ngx-mentions';
+import { NgxMentionsModule } from 'ngx-mentions';
 
 @NgModule({
-  imports: [MentionsModule],
+  imports: [NgxMentionsModule],
   declarations: [],
 })
 
@@ -80,7 +80,7 @@ Name | Description | Output type
 ### @Inputs
 Name | Description | Type | Default
 --- | --- | --- | ---
-`displayLabel` | A function that formats the selected choice once selected. The result (label) is also used as a choice identifier (e.g. when editing choices).  | `(choice: any) => string` | Required
+`getDisplayLabel` | A function that formats the selected choice once selected. The result (label) is also used as a choice identifier (e.g. when editing choices).  | `(choice: any) => string` | Required
 `choices` | Pre-set choices to show in dropdown. | `any[]` | `[]`
 
 ### @Outputs
@@ -112,7 +112,7 @@ Name | Description | Output type
   <ng-template #menuTemplate
                let-selectChoice="selectChoice">
     <ngx-text-input-autocomplete-menu [choices]="choices"
-            [displayLabel]="displayLabel"
+            [getDisplayLabel]="getDisplayLabel"
             (selectChoice)="selectChoice($event)">
     </ngx-text-input-autocomplete-menu>
   </ng-template>
@@ -141,10 +141,14 @@ Name | Description | Output type
 
   <ng-template #menuTemplate
                let-selectChoice="selectChoice">
-    <ul class="ngx-selectable-list">
+    <ul class="ngx-selectable-list"
+      ngxKbListNavigation
+      [choices]="choices"
+      (selectChoice)="selectChoice($event)"
+      [class.loader-only]="!choices.length && loading">
       <li *ngFor="let user of choices"
-          class="ngx-selectable-list-item"
-          (click)="selectChoice(user)">
+        class="ngx-selectable-list-item"
+        (click)="selectChoice(user)">
         <span title="{{user.name}}">{{user.name}}</span>
       </li>
     </ul>
