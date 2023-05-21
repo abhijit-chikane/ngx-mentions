@@ -20,10 +20,10 @@
   <ng-template #menuTemplate
     let-selectChoice="selectChoice">
     <ngx-text-input-autocomplete-menu [choices]="choices"
-      [displayLabel]="displayLabel"
+      [getDisplayLabel]="getDisplayLabel"
       (selectChoice)="selectChoice($event)">
     </ngx-text-input-autocomplete-menu>
   </ng-template>
 
-  <h4>Keyboard supported text input autocomplete menu</h4>
+  <h4>Built in autocomplete menu</h4>
 </div>

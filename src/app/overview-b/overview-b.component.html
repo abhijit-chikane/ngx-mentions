@@ -20,6 +20,9 @@
   <ng-template #menuTemplate
     let-selectChoice="selectChoice">
     <ul class="ngx-selectable-list"
+      ngxKbListNavigation
+      [choices]="choices"
+      (selectChoice)="selectChoice($event)"
       [class.loader-only]="!choices.length && loading">
       <li *ngFor="let user of choices"
         class="ngx-selectable-list-item"
