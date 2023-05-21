@@ -68,9 +68,9 @@ export class KbListNavigationDirective {
       const dropdownMenu = this.elementRef.nativeElement;
       const li = dropdownMenu.children[index];
       Array.from(dropdownMenu.children).forEach((li: Element) => {
-        this.renderer.removeClass(li, '.active');
+        this.renderer.removeClass(li, 'active');
       });
-      this.renderer.addClass(li, '.active')
+      this.renderer.addClass(li, 'active')
     }, 0);
   }
 }
