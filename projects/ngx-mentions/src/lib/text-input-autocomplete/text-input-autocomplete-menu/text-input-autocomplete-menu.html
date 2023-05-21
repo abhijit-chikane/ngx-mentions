@@ -1,12 +1,13 @@
 <ul *ngIf="choices?.length"
-    #dropdownMenu
+    ngxKbListNavigation
+    [choices]="choices"
+    (selectChoice)="selectChoice.emit($event)"
     class="ngx-selectable-list"
     [style.top.px]="position?.top"
     [style.left.px]="position?.left">
-    <li *ngFor="let choice of choices"
-        [class.active]="activeChoice === choice"
+    <li *ngFor="let choice of choices; trackBy:trackById;"
         (click)="selectChoice.emit(choice)"
         class="ngx-selectable-list-item">
-        <span> {{displayLabel(choice)}} </span>
+        <span> {{getDisplayLabel(choice)}} </span>
     </li>
 </ul>

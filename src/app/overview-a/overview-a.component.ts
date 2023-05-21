@@ -38,7 +38,7 @@ export class OverviewAComponent implements OnInit {
     return `@${user.name}`;
   };
 
-  displayLabel = (user: User): string => {
+  getDisplayLabel = (user: User): string => {
     return user.name;
   };
 
