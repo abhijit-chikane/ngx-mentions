@@ -111,6 +111,22 @@ export class TextInputHighlightComponent implements OnInit, OnChanges, OnDestroy
   @Input() tagCssClass = '';
 
   /**
+   * Toggle the fireRefresh value to refresh the tag highlight if in case it didn't sync. 
+   * @example
+   * fireRefresh$: Subject<boolean> = new Subject();
+   * onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {
+   *    this.mentions = choices;
+   *    this.fireRefresh$.next();
+   *  }
+   *
+   *  in template 
+   *  [fireRefresh]="fireRefresh$ | async"
+   */
+  @Input() set fireRefresh(value) {
+    this.refresh();
+  };
+
+  /**
    * Called when the area over a tag is clicked.
    */
   @Output() tagClick = new EventEmitter<TagMouseEvent>();
