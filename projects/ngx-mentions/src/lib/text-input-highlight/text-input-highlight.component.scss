@@ -9,7 +9,7 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
-    display: none;
+    visibility: hidden;
   }
   
   word-break: break-word;
