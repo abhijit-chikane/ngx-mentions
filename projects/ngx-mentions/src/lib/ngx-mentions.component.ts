@@ -50,18 +50,9 @@ export class NgxMentionsComponent implements OnInit {
   @Input() getChoiceLabel: (choice: any) => string;
 
   /**
-   * Toggle the fireRefresh value to refresh the tag highlight if in case it didn't sync. 
-   * @example
-   * fireRefresh$: Subject<boolean> = new Subject();
-   * onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {
-   *    this.mentions = choices;
-   *    this.fireRefresh$.next();
-   * }
-   *
-   *  in template 
-   *  [fireRefresh]="fireRefresh$ | async"
+   * Toggle the refreshTagHighlighting value to refresh the tag highlight if in case it didn't sync. 
    */
-  @Input() fireRefresh: boolean;
+  @Input() refreshTagHighlighting: boolean;
 
   /**
    * Called when the options menu is shown
