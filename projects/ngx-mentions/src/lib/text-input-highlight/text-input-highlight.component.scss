@@ -5,7 +5,13 @@
 // }
 
 .ngx-text-highlight-element {
-  overflow: hidden!important;
+  /* hide the scrollbar while retaining its functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
   word-break: break-word;
   white-space: pre-wrap;
   position: absolute;
