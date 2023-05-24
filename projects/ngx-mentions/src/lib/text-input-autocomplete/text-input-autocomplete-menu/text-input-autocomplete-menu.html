@@ -8,6 +8,11 @@
     <li *ngFor="let choice of choices; trackBy:trackById;"
         (click)="selectChoice.emit(choice)"
         class="ngx-selectable-list-item">
-        <span> {{getDisplayLabel(choice)}} </span>
+        <div>
+            <span> {{getDisplayLabel(choice)}} </span>
+        </div>
+        <div *ngIf="getDisplayLabelAdditionalInfo" class="additional-info">
+            <span> {{getDisplayLabelAdditionalInfo(choice)}} </span>
+        </div>
     </li>
 </ul>

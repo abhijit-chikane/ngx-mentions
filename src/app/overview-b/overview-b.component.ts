@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChoiceWithIndices } from 'ngx-mentions';
 
 interface User {
-  id: number;
+  id: string;
   name: string;
 }
 
@@ -58,59 +58,59 @@ export class OverviewBComponent implements OnInit {
         this.loading = false;
         resolve([
           {
-            id: 1,
+            id: '1001',
             name: 'Amelia',
           },
           {
-            id: 2,
+            id: '1002',
             name: 'Doe',
           },
           {
-            id: 3,
+            id: '1003',
             name: 'John Doe',
           },
           {
-            id: 4,
+            id: '1004',
             name: 'John J. Doe',
           },
           {
-            id: 5,
+            id: '1005',
             name: 'John & Doe',
           },
           {
-            id: 6,
+            id: '1006',
             name: 'Fredericka Wilkie',
           },
           {
-            id: 7,
+            id: '1007',
             name: 'Collin Warden',
           },
           {
-            id: 8,
+            id: '1008',
             name: 'Hyacinth Hurla',
           },
           {
-            id: 9,
+            id: '1009',
             name: 'Paul Bud Mazzei',
           },
           {
-            id: 10,
+            id: '1010',
             name: 'Mamie Xander Blais',
           },
           {
-            id: 11,
+            id: '1011',
             name: 'Sacha Murawski',
           },
           {
-            id: 12,
+            id: '1012',
             name: 'Marcellus Van Cheney',
           },
           {
-            id: 12,
+            id: '1013',
             name: 'Lamar Kowalski',
           },
           {
-            id: 13,
+            id: '1014',
             name: 'Queena Gauss',
           },
         ]);

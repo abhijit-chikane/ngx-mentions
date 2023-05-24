@@ -15,8 +15,18 @@
         transition: background-color 0.3s ease;
         background-color: #ffffff;
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        justify-content: center;
         height: 30px;
+
+        .additional-info {
+            color: gray;
+            line-height: 0.9;
+
+            span {
+                font-size: 12px;
+            }
+        }
 
         &:hover {
             color: #000;
@@ -28,7 +38,7 @@
             background-color: #3380c4;
         }
 
-        >span {
+        div>span {
             //flex-grow: 0;
             //font-family: omnes_att_ii_medium;
             text-overflow: ellipsis;
@@ -36,6 +46,16 @@
             white-space: nowrap;
             display: inline-block;
             vertical-align: middle;
+            max-width: 100%;
+        }
+
+        &:has(.additional-info) {
+            padding: 6px 16px;
+
+            &.active,
+            &.active .additional-info {
+                color: #fff;
+            }
         }
     }
 }
