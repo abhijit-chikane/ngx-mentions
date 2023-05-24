@@ -1,34 +1,61 @@
 .ngx-selectable-list {
   padding: 0;
+  margin: 8px 0;
+  background-color: #f9f9f9;
+  z-index: 1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  max-height: 400px;
+  overflow: auto;
 
   .ngx-selectable-list-item {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    height: 2rem;
-    min-width: 10rem;
-    background-color: #ffffff;
+    padding: 2px 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #ffffff;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
+    height: 30px;
+
+    .additional-info {
+      color: gray;
+      line-height: 0.9;
+
+      span {
+        font-size: 12px;
+      }
+    }
 
     &:hover {
       color: #000;
       background-color: #e5f0ff;
     }
-    
+
     &.active {
-      background-color: #3380c4;
       color: #fff;
+      background-color: #3380c4;
     }
 
-
-    >span {
+    div>span {
       //flex-grow: 0;
       //font-family: omnes_att_ii_medium;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+      display: inline-block;
+      vertical-align: middle;
+      max-width: 100%;
+    }
+
+    &:has(.additional-info) {
+      padding: 6px 16px;
+
+      &.active,
+      &.active .additional-info {
+        color: #fff;
+      }
     }
   }
 }
