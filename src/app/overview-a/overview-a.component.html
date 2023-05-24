@@ -12,6 +12,7 @@
     [getChoiceLabel]="getChoiceLabel"
     [searchRegexp]="searchRegexp"
     [removeWholeTagOnBackspace]="true"
+    [refreshTagHighlighting]="mentions"
     (search)="loadChoices($event)"
     (selectedChoicesChange)="onSelectedChoicesChange($event)"
     (menuShow)="onMenuShow()"
@@ -21,6 +22,7 @@
     let-selectChoice="selectChoice">
     <ngx-text-input-autocomplete-menu [choices]="choices"
       [getDisplayLabel]="getDisplayLabel"
+      [getDisplayLabelAdditionalInfo]="getDisplayLabelAdditionalInfo"
       (selectChoice)="selectChoice($event)">
     </ngx-text-input-autocomplete-menu>
   </ng-template>
