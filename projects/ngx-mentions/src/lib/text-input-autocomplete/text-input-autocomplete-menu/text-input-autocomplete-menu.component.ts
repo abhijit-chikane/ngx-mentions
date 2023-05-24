@@ -8,6 +8,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewC
 export class TextInputAutocompleteMenuComponent {
   @Input() choices: any[];
   @Input() getDisplayLabel: (choice: any) => string;
+  @Input() getDisplayLabelAdditionalInfo: (choice: any) => string;
   @Output() selectChoice = new EventEmitter<any>();
 
   position: { top: number; left: number } | undefined;
