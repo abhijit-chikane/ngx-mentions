@@ -539,7 +539,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
         let occurrenceCount = 1;
         // Iterate over the remaining choices in the array and count occurrences of the current choice
         for (let j = i + 1; j < choices.length; j++) {
-          if (choices[j].choice.name === choice.choice.name) {
+          if (this.getChoiceLabel(choices[j].choice) === this.getChoiceLabel(choice.choice)) {
             occurrenceCount++;
           }
         }
