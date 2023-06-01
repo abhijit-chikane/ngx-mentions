@@ -124,6 +124,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     triggerCharacterPosition: number;
     lastCaretPosition?: number;
   };
+  private _isAllTextsSelected: boolean;
 
   constructor(private ngZone: NgZone, private renderer: Renderer2, private changeDetectorRef: ChangeDetectorRef) { }
 
@@ -207,7 +208,12 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     const precedingChar = this.textInputElement.value.charAt(this._cursorPosition - 1);
     const key = event.key;
 
-    this.moveCursorToTagBoundaryIfWithinTag(key, this._cursorPosition)
+    if (event.ctrlKey && key === 'a') {
+      this._isAllTextsSelected = true;
+      return;
+    }
+
+    this.moveCursorToTagBoundaryIfWithinTag(key, this._cursorPosition);
 
     if (key === this.triggerCharacter && precedingCharValid(precedingChar)) {
       this.showMenu();
@@ -215,15 +221,27 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     }
 
     if (key === 'Backspace' || key === 'Delete') {
-      // backspace or delete
-      const cwiToEdit = this._selectedCwis.find((cwi) => {
-        return cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition;
-      });
+      // if _isAllTextsSelected is true, remove all texts and choices
+      if (this._isAllTextsSelected) {
+        this.textInputElement.value = '';
+        this.textInputElement.dispatchEvent(new Event('input'));
+        this._selectedCwis.forEach((cwi) => this.choiceRemoved.emit(cwi));
+        this._selectedCwis = [];
+        this.selectedChoicesChange.emit(this._selectedCwis);
+      } else {
+        // backspace or delete
+        const cwiToEdit = this._selectedCwis.find((cwi) => {
+          return (
+            cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition
+          );
+        });
 
-      if (cwiToEdit) {
-        this.editChoice(cwiToEdit.choice);
+        if (cwiToEdit) {
+          this.editChoice(cwiToEdit.choice);
+        }
       }
     }
+    this._isAllTextsSelected = false;
   }
 
   onInput(event: any): void {
