@@ -209,7 +209,9 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     const precedingChar = this.textInputElement.value.charAt(this._cursorPosition - 1);
     const key = event.key;
 
-    this.moveCursorToTagBoundaryIfWithinTag(key, this._cursorPosition);
+    if (!event.shiftKey) {
+      this.moveCursorToTagBoundaryIfWithinTag(key, this._cursorPosition);
+    }
 
     if (key === this.triggerCharacter && precedingCharValid(precedingChar)) {
       this.showMenu();
@@ -370,7 +372,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
           left -= bounds.left + bounds.width - window.innerWidth + 20;
           this.menuCtrl.position.left = left;
           this.changeDetectorRef.detectChanges();
-        } 
+        }
       }
     }, 0);
   }
@@ -419,7 +421,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     const endIndex = startIndex + label.length;
 
     this._editingCwi = this._selectedCwis.find((cwi) => this.getChoiceLabel(cwi.choice) === label
-     && cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition)!;
+      && cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition)!;
     this.removeFromSelected(this._editingCwi);
     this.selectedChoicesChange.emit(this._selectedCwis);
 
