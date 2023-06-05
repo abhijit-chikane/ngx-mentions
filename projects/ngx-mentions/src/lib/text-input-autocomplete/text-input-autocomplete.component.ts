@@ -113,6 +113,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   private _dumpedCwis: ChoiceWithIndices[] = [];
   private _editingCwi: ChoiceWithIndices;
   private _cursorPosition: number;
+  private _cursorSelectionEnd: number;
 
   menuCtrl?: {
     template: TemplateRef<any>;
@@ -124,7 +125,6 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     triggerCharacterPosition: number;
     lastCaretPosition?: number;
   };
-  private _isAllTextsSelected: boolean;
 
   constructor(private ngZone: NgZone, private renderer: Renderer2, private changeDetectorRef: ChangeDetectorRef) { }
 
@@ -205,13 +205,9 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
 
   onKeydown(event: KeyboardEvent): void {
     this._cursorPosition = this.textInputElement.selectionStart!;
+    this._cursorSelectionEnd = this.textInputElement.selectionEnd!;
     const precedingChar = this.textInputElement.value.charAt(this._cursorPosition - 1);
     const key = event.key;
-
-    if (event.ctrlKey && key === 'a') {
-      this._isAllTextsSelected = true;
-      return;
-    }
 
     this.moveCursorToTagBoundaryIfWithinTag(key, this._cursorPosition);
 
@@ -221,12 +217,13 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     }
 
     if (key === 'Backspace' || key === 'Delete') {
-      // if _isAllTextsSelected is true, remove all texts and choices
-      if (this._isAllTextsSelected) {
-        this.textInputElement.value = '';
-        this.textInputElement.dispatchEvent(new Event('input'));
-        this._selectedCwis.forEach((cwi) => this.choiceRemoved.emit(cwi));
-        this._selectedCwis = [];
+      if (this._cursorPosition !== this._cursorSelectionEnd) {
+        // remove selected text and choices
+        this._selectedCwis.forEach((cwi) => {
+          if (this.isCwiWithinSelection(cwi.indices)) {
+            this.removeFromSelected(cwi);
+          }
+        });
         this.selectedChoicesChange.emit(this._selectedCwis);
       } else {
         // backspace or delete
@@ -241,7 +238,6 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
         }
       }
     }
-    this._isAllTextsSelected = false;
   }
 
   onInput(event: any): void {
@@ -379,6 +375,13 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     }, 0);
   }
 
+  private isCwiWithinSelection({ start, end }: { start: number; end: number }): boolean {
+    return (
+      (start >= this._cursorPosition && start <= this._cursorSelectionEnd) ||
+      (end >= this._cursorPosition && end <= this._cursorSelectionEnd)
+    );
+  }
+
   selectChoice = (choice: any) => {
     const label = this.getChoiceLabel(choice);
     const startIndex = this.menuCtrl!.triggerCharacterPosition;
@@ -415,8 +418,8 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     const startIndex = this.getChoiceIndex(label, occurence);
     const endIndex = startIndex + label.length;
 
-    this._editingCwi = this._selectedCwis.find((cwi) => this.getChoiceLabel(cwi.choice) === label &&
-      (cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition))!;
+    this._editingCwi = this._selectedCwis.find((cwi) => this.getChoiceLabel(cwi.choice) === label
+     && cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition)!;
     this.removeFromSelected(this._editingCwi);
     this.selectedChoicesChange.emit(this._selectedCwis);
 
@@ -439,13 +442,13 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
 
   moveCursorToTagBoundaryIfWithinTag(key: string, cursorPosition: number) {
     const choiceExists = this._selectedCwis.find((cwi) => {
-      return cwi.indices.start < cursorPosition! + 1 && cwi.indices.end > cursorPosition! - 1
+      return cwi.indices.start < cursorPosition! + 1 && cwi.indices.end > cursorPosition! - 1;
     });
 
     if (choiceExists) {
       // put the cursor at the start or end of the tag while moving cursor
-      if (key === 'ArrowLeft' && choiceExists.indices.end === cursorPosition ||
-        key === 'ArrowRight' && choiceExists.indices.start === cursorPosition) {
+      if ((key === 'ArrowLeft' && choiceExists.indices.end === cursorPosition) ||
+        (key === 'ArrowRight' && choiceExists.indices.start === cursorPosition)) {
         this.textInputElement.setSelectionRange(choiceExists.indices.start, choiceExists.indices.end);
       }
     }
@@ -482,12 +485,11 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   }
 
   addToSelected(cwi: ChoiceWithIndices): void {
-
     this._selectedCwis.push(cwi);
     this.choiceSelected.emit(cwi);
   }
 
-  removeFromSelected(cwi: ChoiceWithIndices, occurence?: number): void {
+  removeFromSelected(cwi: ChoiceWithIndices): void {
     const exists = this._selectedCwis.some(
       (scwi) => this.getChoiceLabel(scwi.choice) === this.getChoiceLabel(cwi.choice)
     );
@@ -527,7 +529,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   }
 
   updateIndices(): void {
-    const occOfUniqueLabels: Record<string, number> = {}
+    const occOfUniqueLabels: Record<string, number> = {};
     this._selectedCwis = this._selectedCwis.map((cwi) => {
       const label = this.getChoiceLabel(cwi.choice);
       if (!occOfUniqueLabels[label]) {
