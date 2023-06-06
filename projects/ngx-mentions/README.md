@@ -162,6 +162,10 @@ Abhijit Chikane
 [Github](https://github.com/abhijit-chikane) | 
 [LinkedIn](https://www.linkedin.com/in/abhijit-chikane/)
 
+Sumit Basak
+
+[LinkedIn](https://www.linkedin.com/in/sumit-basak-9569156b/)
+
 
 ## Based on
 @flxng-mentions 
