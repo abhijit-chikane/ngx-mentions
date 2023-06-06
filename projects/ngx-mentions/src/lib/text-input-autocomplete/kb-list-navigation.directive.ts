@@ -6,7 +6,7 @@ import { Directive, HostListener, Input, ElementRef, Renderer2, EventEmitter, Ou
 export class KbListNavigationDirective {
   @Input() set choices(choices: any[]) {
     this._choices = choices;
-    if (choices.indexOf(this.activeChoice) === -1 && choices.length > 0) {
+    if (choices.length > 0) {
       this.activeChoice = choices[0];
       this.applyActiveClass(0);
     }
