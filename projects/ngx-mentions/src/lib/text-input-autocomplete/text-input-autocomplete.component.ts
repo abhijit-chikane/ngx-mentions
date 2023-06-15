@@ -24,6 +24,7 @@ export interface ChoiceWithIndices {
   indices: {
     start: number;
     end: number;
+    triggerCharacter: string
   };
 }
 
@@ -33,6 +34,18 @@ export interface ChoiceWithIndices {
   styleUrls: ['./text-input-autocomplete.component.scss'],
 })
 export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDestroy {
+  @Input() mentionsConfig: {
+    /**
+    * The character that will trigger the menu to appear
+    */
+    triggerCharacter: string,
+    /**
+    * A function that formats the selected choice once selected.
+    * The result (label) is also used as a choice identifier (e.g. when editing choices)
+    */
+    getChoiceLabel: (choice: any) => string
+  }[];
+
   @ViewChild('dropdownMenu', { read: ElementRef }) dropdownMenu: ElementRef;
 
   /**
@@ -44,11 +57,6 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
    * Reference to the menu template (used to display the search results).
    */
   @Input() menuTemplate: TemplateRef<any>;
-
-  /**
-   * The character which will trigger the search.
-   */
-  @Input() triggerCharacter = '@';
 
   /**
    * The regular expression that will match the search text after the trigger character.
@@ -70,12 +78,6 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
    * Pre-set choices for edit text mode, or to select/mark choices from outside the mentions component.
    */
   @Input() selectedChoices: any[] = [];
-
-  /**
-   * A function that formats the selected choice once selected.
-   * The result (label) is also used as a choice identifier (e.g. when editing choices).
-   */
-  @Input() getChoiceLabel: (choice: any) => string;
 
   /**
    * Called when the choices menu is shown.
@@ -105,7 +107,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   /**
    * Called on user input after entering trigger character. Emits search term to search by.
    */
-  @Output() search = new EventEmitter<string>();
+  @Output() search = new EventEmitter<{ searchText: string; triggerCharacter: string }>();
 
   private _eventListeners: Array<() => void> = [];
 
@@ -125,6 +127,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     triggerCharacterPosition: number;
     lastCaretPosition?: number;
   };
+  matchMention: { triggerCharacter: string; getChoiceLabel: (choice: any) => string; };
 
   constructor(private ngZone: NgZone, private renderer: Renderer2, private changeDetectorRef: ChangeDetectorRef) { }
 
@@ -194,8 +197,10 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     const cursorPosition = this.textInputElement.selectionStart;
     const precedingChar = this.textInputElement.value.charAt(cursorPosition! - 1);
     const key = event.data;
+    const matchMention = this.mentionsConfig.find(item => item.triggerCharacter === key);
 
-    if (key === this.triggerCharacter && precedingCharValid(precedingChar)) {
+    if (key === matchMention?.triggerCharacter && precedingCharValid(precedingChar)) {
+      this.matchMention = matchMention;
       this.showMenu();
       return;
     }
@@ -208,12 +213,14 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     this._cursorSelectionEnd = this.textInputElement.selectionEnd!;
     const precedingChar = this.textInputElement.value.charAt(this._cursorPosition - 1);
     const key = event.key;
+    const matchMention = this.mentionsConfig.find(item => item.triggerCharacter === key);
 
     if (!event.shiftKey) {
       this.moveCursorToTagBoundaryIfWithinTag(key, this._cursorPosition);
     }
 
-    if (key === this.triggerCharacter && precedingCharValid(precedingChar)) {
+    if (key === matchMention?.triggerCharacter && precedingCharValid(precedingChar)) {
+      this.matchMention = matchMention;
       this.showMenu();
       return;
     }
@@ -236,7 +243,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
         });
 
         if (cwiToEdit) {
-          this.editChoice(cwiToEdit.choice);
+          this.editChoice(cwiToEdit);
         }
       }
     }
@@ -265,7 +272,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
       this.selectedChoicesChange.emit(this._selectedCwis);
     }
 
-    if (value[this.menuCtrl.triggerCharacterPosition] !== this.triggerCharacter) {
+    if (value[this.menuCtrl.triggerCharacterPosition] !== this.matchMention?.triggerCharacter) {
       this.hideMenu();
       return;
     }
@@ -282,7 +289,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
       return;
     }
 
-    this.search.emit(searchText);
+    this.search.emit({ searchText, triggerCharacter: this.matchMention.triggerCharacter });
   }
 
   onBlur(event: FocusEvent): void {
@@ -325,9 +332,9 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
 
     if (this._editingCwi) {
       // If user didn't make any changes to it, add it back to the selected choices
-      const label = this.getChoiceLabel(this._editingCwi.choice);
+      const label = this.getChoiceLabel(this._editingCwi.indices.triggerCharacter, this._editingCwi.choice);
       const labelExists = this.getChoiceIndex(label + ' ') > -1;
-      const choiceExists = this._selectedCwis.find((cwi) => this.getChoiceLabel(cwi.choice) === label);
+      const choiceExists = this._selectedCwis.find((cwi) => this.getChoiceLabel(cwi.indices.triggerCharacter, cwi.choice) === label);
       if (labelExists && !choiceExists) {
         this.addToSelected(this._editingCwi);
         this.updateIndices();
@@ -385,7 +392,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   }
 
   selectChoice = (choice: any) => {
-    const label = this.getChoiceLabel(choice);
+    const label = this.matchMention?.getChoiceLabel(choice);
     const startIndex = this.menuCtrl!.triggerCharacterPosition;
     const start = this.textInputElement.value.slice(0, startIndex);
     const caretPosition = this.menuCtrl!.lastCaretPosition || this.textInputElement.selectionStart;
@@ -404,6 +411,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
       indices: {
         start: startIndex,
         end: startIndex + label.length,
+        triggerCharacter: this.matchMention.triggerCharacter
       },
     };
 
@@ -414,16 +422,21 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     this.hideMenu();
   };
 
-  editChoice(choice: any): void {
-    const label = this.getChoiceLabel(choice);
+  editChoice(choiceWithIndices: ChoiceWithIndices): void {
+    const label = this.getChoiceLabel(choiceWithIndices.indices.triggerCharacter, choiceWithIndices.choice);
     const occurence = this.getOccurrenceBasedOnCursorPos();
     const startIndex = this.getChoiceIndex(label, occurence);
     const endIndex = startIndex + label.length;
 
-    this._editingCwi = this._selectedCwis.find((cwi) => this.getChoiceLabel(cwi.choice) === label
-      && cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition)!;
-    this.removeFromSelected(this._editingCwi);
-    this.selectedChoicesChange.emit(this._selectedCwis);
+    this._editingCwi = this._selectedCwis.find((cwi) =>
+      this.getChoiceLabel(cwi.indices.triggerCharacter, cwi.choice) === label
+      && cwi.indices.start <= this._cursorPosition && cwi.indices.end >= this._cursorPosition
+    )!;
+
+    if (this._editingCwi) {
+      this.removeFromSelected(this._editingCwi);
+      this.selectedChoicesChange.emit(this._selectedCwis);
+    }
 
     this.textInputElement.focus();
 
@@ -438,8 +451,8 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     this.menuCtrl!.triggerCharacterPosition = startIndex;
 
     // TODO: editValue to be provided externally?
-    const editValue = label.replace(this.triggerCharacter, '');
-    this.search.emit(editValue);
+    const editValue = label.replace(this.matchMention?.triggerCharacter, '');
+    this.search.emit({ searchText: editValue, triggerCharacter: this.matchMention?.triggerCharacter });
   }
 
   moveCursorToTagBoundaryIfWithinTag(key: string, cursorPosition: number) {
@@ -458,7 +471,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
 
   dumpNonExistingChoices(): void {
     const choicesToDump = this._selectedCwis.filter((cwi) => {
-      const label = this.getChoiceLabel(cwi.choice);
+      const label = this.getChoiceLabel(cwi.indices.triggerCharacter, cwi.choice);
       return this.getChoiceIndex(label) === -1;
     });
 
@@ -472,9 +485,9 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
 
   retrieveExistingChoices(): void {
     const choicesToRetrieve = this._dumpedCwis.filter((dcwi) => {
-      const label = this.getChoiceLabel(dcwi.choice);
+      const label = this.getChoiceLabel(dcwi.indices.triggerCharacter, dcwi.choice);
       const labelExists = this.getChoiceIndex(label) > -1;
-      const choiceExists = this._selectedCwis.find((scwi) => this.getChoiceLabel(scwi.choice) === label);
+      const choiceExists = this._selectedCwis.find((scwi) => this.getChoiceLabel(scwi.indices.triggerCharacter, scwi.choice) === label);
       return labelExists && !choiceExists;
     });
 
@@ -493,7 +506,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
 
   removeFromSelected(cwi: ChoiceWithIndices): void {
     const exists = this._selectedCwis.some(
-      (scwi) => this.getChoiceLabel(scwi.choice) === this.getChoiceLabel(cwi.choice)
+      (scwi) => this.getChoiceLabel(scwi.indices.triggerCharacter, scwi.choice) === this.getChoiceLabel(cwi.indices.triggerCharacter, cwi.choice)
     );
 
     if (exists) {
@@ -525,7 +538,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
 
   getChoiceIndex(label: string, occurence?: number): number {
     const text = this.textInputElement && this.textInputElement.value;
-    const labels = this._selectedCwis.map((cwi) => this.getChoiceLabel(cwi.choice));
+    const labels = this._selectedCwis.map((cwi) => this.getChoiceLabel(cwi.indices.triggerCharacter, cwi.choice));
 
     return getChoiceIndex(text, label, labels, occurence);
   }
@@ -533,7 +546,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   updateIndices(): void {
     const occOfUniqueLabels: Record<string, number> = {};
     this._selectedCwis = this._selectedCwis.map((cwi) => {
-      const label = this.getChoiceLabel(cwi.choice);
+      const label = this.getChoiceLabel(cwi.indices.triggerCharacter, cwi.choice);
       if (!occOfUniqueLabels[label]) {
         occOfUniqueLabels[label] = 1;
       } else {
@@ -545,9 +558,17 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
         indices: {
           start: index,
           end: index + label.length,
+          triggerCharacter: cwi.indices.triggerCharacter
         },
       };
     });
+  }
+
+  getChoiceLabel(triggerCharacter: string, choice: any): string {
+    if (this.mentionsConfig.length === 1) {
+      return this.mentionsConfig[0].getChoiceLabel(choice);
+    }
+    return this.mentionsConfig.find(item => item.triggerCharacter === triggerCharacter).getChoiceLabel(choice);
   }
 
   getOccurrenceBasedOnCursorPos(): number {
@@ -561,7 +582,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
         let occurrenceCount = 1;
         // Iterate over the remaining choices in the array and count occurrences of the current choice
         for (let j = i + 1; j < choices.length; j++) {
-          if (this.getChoiceLabel(choices[j].choice) === this.getChoiceLabel(choice.choice)) {
+          if (this.getChoiceLabel(choices[j].indices.triggerCharacter, choices[j].choice) === this.getChoiceLabel(choice.indices.triggerCharacter, choice.choice)) {
             occurrenceCount++;
           }
         }
