@@ -8,8 +8,7 @@
 
   <ngx-mentions [textInputElement]="textareaRef"
     [menuTemplate]="menuTemplate"
-    [triggerCharacter]="'@'"
-    [getChoiceLabel]="getChoiceLabel"
+    [mentionsConfig]="mentionsConfig"
     [searchRegexp]="searchRegexp"
     [removeWholeTagOnBackspace]="true"
     (search)="loadChoices($event)"
