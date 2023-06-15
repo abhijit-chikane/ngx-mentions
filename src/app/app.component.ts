@@ -1,12 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ChoiceWithIndices } from '../../projects/ngx-mentions/src/public-api';
-
-
-interface User {
-  id: number;
-  name: string;
-}
-declare const gtag: Function;
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',

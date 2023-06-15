@@ -53,8 +53,7 @@ Name | Description | Type | Default
 --- | --- | --- | ---
 `textInputElement` | Reference to the text input element. | `HTMLTextAreaElement` | Required
 `menuTemplate` | Reference to the menu template (used to display the search results). | `TemplateRef` | Required
-`getChoiceLabel` | A function that formats the selected choice once selected. The result (label) is also used as a choice identifier (e.g. when editing choices).  | `(choice: any) => string` | Required
-`triggerCharacter` | The character which will trigger the search. | `string` | `@`
+| `mentionsConfig` | An array of objects representing the configuration for mentions. Each object should have the following properties:<br>---<br>`triggerCharacter`: The character that will trigger the menu to appear.<br>`getChoiceLabel`: A function that formats the selected choice and returns the label for the choice. | `{ triggerCharacter: string, getChoiceLabel: (choice: any) => string }[]` | ```typescript [ { triggerCharacter: '@', getChoiceLabel: (user: User): string => { return `@${user.name}`; }, }, { triggerCharacter: '#', getChoiceLabel: (tag: Tag): string => { return `#${tag.tag}`; }, } ]``` |
 `searchRegexp` | The regular expression that will match the search text after the trigger character. No match will hide the menu. | `RegExp` | `/^\w*$/`
 `closeMenuOnBlur` | Whether to close the menu when the host `textInputElement` loses focus. | `boolean` | `false`
 `selectedChoices` | Pre-set choices for edit text mode, or to select/mark choices from outside the mentions component. | `any[]` | `[]`
@@ -64,7 +63,7 @@ Name | Description | Type | Default
 ### @Outputs
 Name | Description | Output type
 --- | --- | ---
-`search` | Called on user input after entering trigger character. Emits search term to search by. | `string`
+`search` | Called on user input after entering trigger character. Emits search term to search by and the char which trigger the current mention search. | `{ searchText: string, triggerCharacter: string }`
 `menuShow` | Called when the choices menu is shown. | `void`
 `menuHide` | Called when the choices menu is hidden. | `void`
 `choiceSelected` | Called when a choice is selected. | `ChoiceWithIndices`
@@ -100,8 +99,7 @@ Name | Description | Output type
 
   <ngx-mentions [textInputElement]="textareaRef"
                 [menuTemplate]="menuTemplate"
-                [triggerCharacter]="'@'"
-                [getChoiceLabel]="getChoiceLabel"
+                [mentionsConfig]="mentionsConfig"
                 [searchRegexp]="'^([-&.\\w]+ *){0,3}$'"
                 [removeWholeTagOnBackspace]="true"
                 (search)="loadChoices($event)"
@@ -130,8 +128,7 @@ Name | Description | Output type
 
   <ngx-mentions [textInputElement]="textareaRef"
                 [menuTemplate]="menuTemplate"
-                [triggerCharacter]="'@'"
-                [getChoiceLabel]="getChoiceLabel"
+                [mentionsConfig]="mentionsConfig"
                 [searchRegexp]="'^([-&.\\w]+ *){0,3}$'"
                 [removeWholeTagOnBackspace]="true"
                 (search)="loadChoices($event)"
@@ -164,13 +161,8 @@ Abhijit Chikane
 
 Sumit Basak
 
+[Github](https://github.com/SumitB06) | 
 [LinkedIn](https://www.linkedin.com/in/sumit-basak-9569156b/)
-
-
-## Based on
-@flxng-mentions 
-
-More examples [here](https://flxng.codeeve.com/#/mentions).
 
 ## Support
 All suggestions and improvements are welcome and appreciated.

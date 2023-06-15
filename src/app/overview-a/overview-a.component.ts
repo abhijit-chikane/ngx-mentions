@@ -6,6 +6,10 @@ interface User {
   id: string;
   name: string;
 }
+interface Tag {
+  id: string;
+  tag: string;
+}
 
 @Component({
   selector: 'app-overview-a',
@@ -15,35 +19,56 @@ interface User {
 export class OverviewAComponent implements OnInit {
   text = ``;
   loading = false;
-  choices: User[] = [];
+  choices: (User | Tag)[] = [];
   mentions: ChoiceWithIndices[] = [];
   searchRegexp = new RegExp('^([-&.\\w]+ *){0,3}$');
-  constructor() {}
 
-  ngOnInit() {}
+  mentionsConfig = [
+    {
+      triggerCharacter: '@',
+      getChoiceLabel: (user: User): string => {
+        return `@${user.name}`;
+      },
+    },
+    {
+      triggerCharacter: '#',
+      getChoiceLabel: (tag: Tag): string => {
+        return `#${tag.tag}`;
+      },
+    }
+  ]
 
-  async loadChoices(searchTerm: string): Promise<User[]> {
-    const users = await this.getUsers();
+  constructor() { }
 
-    this.choices = users.filter((user) => {
-      // const alreadyExists = this.mentions.some((m) => m.choice.name === user.name);
-      return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
-      // && !alreadyExists;
-    });
+  ngOnInit() { }
 
+  async loadChoices({ searchText, triggerCharacter }: { searchText: string, triggerCharacter: string }): Promise<(User| Tag)[]> {
+    let searchResults
+    if (triggerCharacter === '@') {
+      searchResults = await this.getUsers();
+      this.choices = searchResults.filter((user) => {
+        // const alreadyExists = this.mentions.some((m) => m.choice.name === user.name);
+        return user.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1
+        // && !alreadyExists;
+      });
+    } else {
+      searchResults = await this.getTags();
+      this.choices = searchResults.filter((item) => {
+        return item.tag.toLowerCase().indexOf(searchText.toLowerCase()) > -1
+      });
+    }
     return this.choices;
   }
 
-  getChoiceLabel = (user: User): string => {
-    return `@${user.name}`;
+  getDisplayLabel = (item: (User | Tag)): string => {
+    if(item.hasOwnProperty('name')){
+      return (item as User).name
+    }
+    return (item as Tag).tag
   };
 
-  getDisplayLabel = (user: User): string => {
-    return user.name;
-  };
-
-  getDisplayLabelAdditionalInfo = (user: User): string => {
-    return `id: ${user.id}`;
+  getDisplayLabelAdditionalInfo = (item: (User | Tag)): string => {
+    return `id: ${item.id}`;
   };
 
   onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {
@@ -60,6 +85,73 @@ export class OverviewAComponent implements OnInit {
     this.choices = [];
   }
 
+  async getTags(): Promise<Tag[]> {
+    this.loading = true;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.loading = false;
+        resolve([
+          {
+            id: '1001',
+            tag: 'programming',
+          },
+          {
+            id: '1002',
+            tag: 'technology',
+          },
+          {
+            id: '1003',
+            tag: 'web-development',
+          },
+          {
+            id: '1004',
+            tag: 'javascript',
+          },
+          {
+            id: '1005',
+            tag: 'frontend',
+          },
+          {
+            id: '1006',
+            tag: 'backend',
+          },
+          {
+            id: '1007',
+            tag: 'database',
+          },
+          {
+            id: '1008',
+            tag: 'design',
+          },
+          {
+            id: '1009',
+            tag: 'mobile-apps',
+          },
+          {
+            id: '1010',
+            tag: 'artificial-intelligence',
+          },
+          {
+            id: '1011',
+            tag: 'data-science',
+          },
+          {
+            id: '1012',
+            tag: 'cybersecurity',
+          },
+          {
+            id: '1013',
+            tag: 'cloud-computing',
+          },
+          {
+            id: '1014',
+            tag: 'machine-learning',
+          },
+        ]);
+      }, 600);
+    });
+  }
+  
   async getUsers(): Promise<User[]> {
     this.loading = true;
     return new Promise((resolve, reject) => {

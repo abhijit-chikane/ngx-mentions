@@ -1,6 +1,6 @@
 {
   "name": "ngx-mentions",
-  "version": "12.0.17",
+  "version": "12.1.0",
   "description": "Mentions component for Angular.",
   "license": "MIT",
   "author": "Abhijit Chikane",
@@ -11,11 +11,12 @@
   "homepage": "",
   "keywords": [
     "angular-mentions",
+    "ngx-mentions",
     "angular",
+    "mentions",
     "javascript",
     "typescript",
     "component",
-    "mentions",
     "input-highlight",
     "autocomplete"
   ],
