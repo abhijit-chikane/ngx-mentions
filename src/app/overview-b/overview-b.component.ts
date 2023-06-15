@@ -18,24 +18,29 @@ export class OverviewBComponent implements OnInit {
   choices: User[] = [];
   mentions: ChoiceWithIndices[] = [];
   searchRegexp = new RegExp('^([-&.\\w]+ *){0,3}$');
+
+  mentionsConfig = [
+    {
+      triggerCharacter: '@',
+      getChoiceLabel: (user: User): string => {
+        return `@${user.name}`;
+      },
+    }
+  ]
+
   constructor() {}
 
   ngOnInit() {}
 
-  async loadChoices(searchTerm: string): Promise<User[]> {
+  async loadChoices({searchText, triggerCharacter}:{searchText: string, triggerCharacter: string}): Promise<User[]> {
     const users = await this.getUsers();
-
     this.choices = users.filter((user) => {
       const alreadyExists = this.mentions.some((m) => m.choice.name === user.name);
-      return !alreadyExists && user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+      return !alreadyExists && user.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
     });
 
     return this.choices;
   }
-
-  getChoiceLabel = (user: User): string => {
-    return `@${user.name}`;
-  };
 
   onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {
     this.mentions = choices;

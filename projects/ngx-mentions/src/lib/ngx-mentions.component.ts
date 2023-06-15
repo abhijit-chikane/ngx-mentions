@@ -8,6 +8,19 @@ import { TagMouseEvent } from './text-input-highlight';
   templateUrl: './ngx-mentions.component.html',
 })
 export class NgxMentionsComponent implements OnInit {
+
+  @Input() mentionsConfig: {
+    /**
+    * The character that will trigger the menu to appear
+    */
+    triggerCharacter: string,
+    /**
+    * A function that formats the selected choice once selected.
+    * The result (label) is also used as a choice identifier (e.g. when editing choices)
+    */
+    getChoiceLabel: (choice: any) => string
+  }[];
+
   /**
    * Reference to the text input element
    */
@@ -17,11 +30,6 @@ export class NgxMentionsComponent implements OnInit {
    * Reference to the menu template
    */
   @Input() menuTemplate: TemplateRef<any>;
-
-  /**
-   * The character that will trigger the menu to appear
-   */
-  @Input() triggerCharacter = '@';
 
   /**
    * The regular expression that will match the search text after the trigger character
@@ -42,12 +50,6 @@ export class NgxMentionsComponent implements OnInit {
    * Selected choices (required in editing mode in order to keep track of choices)
    */
   @Input() selectedChoices: any[] = [];
-
-  /**
-   * A function that formats the selected choice once selected.
-   * The result (label) is also used as a choice identifier (e.g. when editing choices)
-   */
-  @Input() getChoiceLabel: (choice: any) => string;
 
   /**
    * Toggle the refreshTagHighlighting value to refresh the tag highlight if in case it didn't sync. 
@@ -82,7 +84,7 @@ export class NgxMentionsComponent implements OnInit {
   /**
    * Called on user input after entering trigger character. Emits search term to search by
    */
-  @Output() search = new EventEmitter<string>();
+  @Output() search = new EventEmitter<{ searchText: string; triggerCharacter: string }>();
 
   // --- text-input-highlight.component inputs/outputs ---
   /**

@@ -3,13 +3,12 @@
     rows="6"
     wrap="hard"
     #textareaRef
-    placeholder="Enter '@' and start typing..."
+    placeholder="Enter '@' or '#' and start typing..."
     [(ngModel)]="text"></textarea>
 
   <ngx-mentions [textInputElement]="textareaRef"
     [menuTemplate]="menuTemplate"
-    [triggerCharacter]="'@'"
-    [getChoiceLabel]="getChoiceLabel"
+    [mentionsConfig]="mentionsConfig"
     [searchRegexp]="searchRegexp"
     [removeWholeTagOnBackspace]="true"
     [refreshTagHighlighting]="mentions"
