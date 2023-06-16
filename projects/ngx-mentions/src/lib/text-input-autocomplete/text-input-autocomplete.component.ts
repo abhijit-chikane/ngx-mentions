@@ -116,6 +116,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   private _editingCwi: ChoiceWithIndices;
   private _cursorPosition: number;
   private _cursorSelectionEnd: number;
+  private _matchMention: { triggerCharacter: string; getChoiceLabel: (choice: any) => string; };
 
   menuCtrl?: {
     template: TemplateRef<any>;
@@ -127,7 +128,6 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     triggerCharacterPosition: number;
     lastCaretPosition?: number;
   };
-  matchMention: { triggerCharacter: string; getChoiceLabel: (choice: any) => string; };
 
   constructor(private ngZone: NgZone, private renderer: Renderer2, private changeDetectorRef: ChangeDetectorRef) { }
 
@@ -200,7 +200,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     const matchMention = this.mentionsConfig.find(item => item.triggerCharacter === key);
 
     if (key === matchMention?.triggerCharacter && precedingCharValid(precedingChar)) {
-      this.matchMention = matchMention;
+      this._matchMention = matchMention;
       this.showMenu();
       return;
     }
@@ -220,7 +220,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     }
 
     if (key === matchMention?.triggerCharacter && precedingCharValid(precedingChar)) {
-      this.matchMention = matchMention;
+      this._matchMention = matchMention;
       this.showMenu();
       return;
     }
@@ -272,7 +272,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
       this.selectedChoicesChange.emit(this._selectedCwis);
     }
 
-    if (value[this.menuCtrl.triggerCharacterPosition] !== this.matchMention?.triggerCharacter) {
+    if (value[this.menuCtrl.triggerCharacterPosition] !== this._matchMention?.triggerCharacter) {
       this.hideMenu();
       return;
     }
@@ -289,7 +289,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
       return;
     }
 
-    this.search.emit({ searchText, triggerCharacter: this.matchMention.triggerCharacter });
+    this.search.emit({ searchText, triggerCharacter: this._matchMention.triggerCharacter });
   }
 
   onBlur(event: FocusEvent): void {
@@ -392,7 +392,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
   }
 
   selectChoice = (choice: any) => {
-    const label = this.matchMention?.getChoiceLabel(choice);
+    const label = this._matchMention?.getChoiceLabel(choice);
     const startIndex = this.menuCtrl!.triggerCharacterPosition;
     const start = this.textInputElement.value.slice(0, startIndex);
     const caretPosition = this.menuCtrl!.lastCaretPosition || this.textInputElement.selectionStart;
@@ -411,7 +411,7 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
       indices: {
         start: startIndex,
         end: startIndex + label.length,
-        triggerCharacter: this.matchMention.triggerCharacter
+        triggerCharacter: this._matchMention.triggerCharacter
       },
     };
 
@@ -451,8 +451,8 @@ export class TextInputAutocompleteComponent implements OnChanges, OnInit, OnDest
     this.menuCtrl!.triggerCharacterPosition = startIndex;
 
     // TODO: editValue to be provided externally?
-    const editValue = label.replace(this.matchMention?.triggerCharacter, '');
-    this.search.emit({ searchText: editValue, triggerCharacter: this.matchMention?.triggerCharacter });
+    const editValue = label.replace(this._matchMention?.triggerCharacter, '');
+    this.search.emit({ searchText: editValue, triggerCharacter: this._matchMention?.triggerCharacter });
   }
 
   moveCursorToTagBoundaryIfWithinTag(key: string, cursorPosition: number) {
