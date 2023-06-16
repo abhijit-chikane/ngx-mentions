@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { ChoiceWithIndices } from 'ngx-mentions';
+import { getFormattedHighlightText, parentCommentStatusBasedStyles } from '../shared/styles/util';
 
 interface User {
   id: string;
@@ -17,11 +20,40 @@ interface Tag {
   styleUrls: ['./overview-a.component.scss'],
 })
 export class OverviewAComponent implements OnInit {
-  text = ``;
+  textCtrl: FormControl = new FormControl(
+    '@Amelia #machine-learning test example with multiple trigger characters'
+  );
   loading = false;
   choices: (User | Tag)[] = [];
   mentions: ChoiceWithIndices[] = [];
   searchRegexp = new RegExp('^([-&.\\w]+ *){0,3}$');
+
+  formattedText: string;
+
+  selectedChoices: ChoiceWithIndices[] = [
+    {
+      choice: {
+        id: '1001',
+        name: 'Amelia',
+      },
+      indices: {
+        start: 0,
+        end: 7,
+        triggerCharacter: '@'
+      },
+    },
+    {
+      choice: {
+        id: '1014',
+        tag: 'machine-learning',
+      },
+      indices: {
+        start: 8,
+        end: 25,
+        triggerCharacter: '#'
+      },
+    },
+  ];
 
   mentionsConfig = [
     {
@@ -38,11 +70,20 @@ export class OverviewAComponent implements OnInit {
     }
   ]
 
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.textCtrl.valueChanges.subscribe((content) =>
+      this.formattedText = getFormattedHighlightText(
+        this.textCtrl.value,
+        this.mentions,
+        parentCommentStatusBasedStyles,
+        this.sanitizer
+      )
+    );
+  }
 
-  async loadChoices({ searchText, triggerCharacter }: { searchText: string, triggerCharacter: string }): Promise<(User| Tag)[]> {
+  async loadChoices({ searchText, triggerCharacter }: { searchText: string, triggerCharacter: string }): Promise<(User | Tag)[]> {
     let searchResults
     if (triggerCharacter === '@') {
       searchResults = await this.getUsers();
@@ -61,7 +102,7 @@ export class OverviewAComponent implements OnInit {
   }
 
   getDisplayLabel = (item: (User | Tag)): string => {
-    if(item.hasOwnProperty('name')){
+    if (item.hasOwnProperty('name')) {
       return (item as User).name
     }
     return (item as Tag).tag
@@ -73,6 +114,12 @@ export class OverviewAComponent implements OnInit {
 
   onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {
     this.mentions = choices;
+    this.formattedText = getFormattedHighlightText(
+      this.textCtrl.value,
+      this.mentions,
+      parentCommentStatusBasedStyles,
+      this.sanitizer
+    )
     console.log('mentions:', this.mentions);
   }
 
@@ -151,7 +198,7 @@ export class OverviewAComponent implements OnInit {
       }, 600);
     });
   }
-  
+
   async getUsers(): Promise<User[]> {
     this.loading = true;
     return new Promise((resolve, reject) => {
