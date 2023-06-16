@@ -4,11 +4,12 @@
     wrap="hard"
     #textareaRef
     placeholder="Enter '@' or '#' and start typing..."
-    [(ngModel)]="text"></textarea>
+    [formControl]="textCtrl"></textarea>
 
   <ngx-mentions [textInputElement]="textareaRef"
     [menuTemplate]="menuTemplate"
     [mentionsConfig]="mentionsConfig"
+    [selectedChoices]="selectedChoices"
     [searchRegexp]="searchRegexp"
     [removeWholeTagOnBackspace]="true"
     [refreshTagHighlighting]="mentions"
@@ -26,5 +27,11 @@
     </ngx-text-input-autocomplete-menu>
   </ng-template>
 
+  
+  <div class="formatted-text" [innerHTML]="formattedText"></div>
+
+  <a href="https://github.com/abhijit-chikane/ngx-mentions/tree/master/src/app/overview-a">Github Example link</a>
+  
   <h4>Built in autocomplete menu</h4>
+
 </div>
