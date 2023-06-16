@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { ChoiceWithIndices } from 'ngx-mentions';
+import { getFormattedHighlightText, parentCommentStatusBasedStyles } from '../shared/styles/util';
+import { DomSanitizer } from '@angular/platform-browser';
 
 interface User {
   id: string;
@@ -13,11 +16,38 @@ interface User {
   styleUrls: ['./overview-b.component.scss'],
 })
 export class OverviewBComponent implements OnInit {
-  text = ``;
+  textCtrl: FormControl = new FormControl(
+    '@Amelia @Fredericka Wilkie could you please review this case?'
+  );
   loading = false;
   choices: User[] = [];
   mentions: ChoiceWithIndices[] = [];
   searchRegexp = new RegExp('^([-&.\\w]+ *){0,3}$');
+
+  selectedChoices: ChoiceWithIndices[] = [
+    {
+      choice: {
+        id: 1,
+        name: 'Amelia',
+      },
+      indices: {
+        start: 0,
+        end: 7,
+        triggerCharacter: '@'
+      },
+    },
+    {
+      choice: {
+        id: 6,
+        name: 'Fredericka Wilkie',
+      },
+      indices: {
+        start: 8,
+        end: 26,
+        triggerCharacter: '@'
+      },
+    },
+  ];
 
   mentionsConfig = [
     {
@@ -27,12 +57,22 @@ export class OverviewBComponent implements OnInit {
       },
     }
   ]
+  formattedText: string;
 
-  constructor() {}
+  constructor(private sanitizer: DomSanitizer) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.textCtrl.valueChanges.subscribe((content) =>
+      this.formattedText = getFormattedHighlightText(
+        this.textCtrl.value,
+        this.mentions,
+        parentCommentStatusBasedStyles,
+        this.sanitizer
+      )
+    );
+  }
 
-  async loadChoices({searchText, triggerCharacter}:{searchText: string, triggerCharacter: string}): Promise<User[]> {
+  async loadChoices({ searchText, triggerCharacter }: { searchText: string, triggerCharacter: string }): Promise<User[]> {
     const users = await this.getUsers();
     this.choices = users.filter((user) => {
       const alreadyExists = this.mentions.some((m) => m.choice.name === user.name);
@@ -44,6 +84,12 @@ export class OverviewBComponent implements OnInit {
 
   onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {
     this.mentions = choices;
+    this.formattedText = getFormattedHighlightText(
+      this.textCtrl.value,
+      this.mentions,
+      parentCommentStatusBasedStyles,
+      this.sanitizer
+    )
     console.log('mentions:', this.mentions);
   }
 
