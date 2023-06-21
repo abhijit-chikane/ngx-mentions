@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 
 import { ChoiceWithIndices } from './text-input-autocomplete';
-import { TagMouseEvent } from './text-input-highlight';
+import { HighlightTag, TagMouseEvent } from './text-input-highlight';
 
 @Component({
   selector: 'ngx-mentions',
   templateUrl: './ngx-mentions.component.html',
 })
-export class NgxMentionsComponent implements OnInit {
+export class NgxMentionsComponent {
 
   @Input() mentionsConfig: {
     /**
@@ -107,14 +107,8 @@ export class NgxMentionsComponent implements OnInit {
    */
   @Output() tagMouseLeave = new EventEmitter<TagMouseEvent>();
 
-  selectedCwis: ChoiceWithIndices[] = [];
-
-  constructor() { }
-
-  ngOnInit(): void { }
-
-  onSelectedChoicesChange(cwis: ChoiceWithIndices[]): void {
-    this.selectedCwis = cwis;
-    this.selectedChoicesChange.emit(cwis);
-  }
+  /**
+   * Array of mentions with the tag level class name if required
+   */
+  @Input() mentions: HighlightTag[] = [];
 }

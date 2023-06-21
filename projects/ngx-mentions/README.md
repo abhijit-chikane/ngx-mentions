@@ -54,6 +54,7 @@ Name | Description | Type | Default
 `textInputElement` | Reference to the text input element. | `HTMLTextAreaElement` | Required
 `menuTemplate` | Reference to the menu template (used to display the search results). | `TemplateRef` | Required
 | `mentionsConfig` | An array of objects representing the configuration for mentions. Each object should have the following properties:<br>---<br>`triggerCharacter`: The character that will trigger the menu to appear.<br>`getChoiceLabel`: A function that formats the selected choice and returns the label for the choice. | `Array` | Required |
+`mentions` | An array of objects containing all the selected mentions | `ChoiceWithIndices[]` | Required |
 `searchRegexp` | The regular expression that will match the search text after the trigger character. No match will hide the menu. | `RegExp` | `/^\w*$/`
 `closeMenuOnBlur` | Whether to close the menu when the host `textInputElement` loses focus. | `boolean` | `false`
 `selectedChoices` | Pre-set choices for edit text mode, or to select/mark choices from outside the mentions component. | `any[]` | `[]`
@@ -101,6 +102,7 @@ Name | Description | Output type
                 [menuTemplate]="menuTemplate"
                 [mentionsConfig]="mentionsConfig"
                 [searchRegexp]="'^([-&.\\w]+ *){0,3}$'"
+                [mentions]="mentions"
                 [removeWholeTagOnBackspace]="true"
                 (search)="loadChoices($event)"
                 (selectedChoicesChange)="onSelectedChoicesChange($event)"
@@ -130,6 +132,7 @@ Name | Description | Output type
                 [menuTemplate]="menuTemplate"
                 [mentionsConfig]="mentionsConfig"
                 [searchRegexp]="'^([-&.\\w]+ *){0,3}$'"
+                [mentions]="mentions"
                 [removeWholeTagOnBackspace]="true"
                 (search)="loadChoices($event)"
                 (selectedChoicesChange)="onSelectedChoicesChange($event)"
