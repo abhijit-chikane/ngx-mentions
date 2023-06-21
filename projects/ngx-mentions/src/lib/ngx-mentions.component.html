@@ -8,12 +8,12 @@
     (search)="search.emit($event)"
     (choiceSelected)="choiceSelected.emit($event)"
     (choiceRemoved)="choiceRemoved.emit($event)"
-    (selectedChoicesChange)="onSelectedChoicesChange($event)"
+    (selectedChoicesChange)="selectedChoicesChange.emit($event)"
     (menuShow)="menuShow.emit()"
     (menuHide)="menuHide.emit()"></ngx-text-input-autocomplete>
 
 <ngx-text-input-highlight [textInputElement]="textInputElement"
-    [tags]="selectedCwis"
+    [tags]="mentions"
     [tagCssClass]="tagCssClass"
     [refreshTagHighlighting]="refreshTagHighlighting"
     (tagClick)="tagClick.emit($event)"
