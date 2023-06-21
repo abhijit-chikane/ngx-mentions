@@ -14,6 +14,9 @@ import { Component } from '@angular/core';
         <div>
             <app-overview-b></app-overview-b>
         </div>
+        <div>
+            <app-overview-c></app-overview-c>
+        </div>
     </div>
   `,
   styles: [`
