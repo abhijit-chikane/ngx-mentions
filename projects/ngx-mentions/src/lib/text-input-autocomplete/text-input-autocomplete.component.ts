@@ -26,6 +26,7 @@ export interface ChoiceWithIndices {
     end: number;
     triggerCharacter: string
   };
+  cssClass?: string;
 }
 
 @Component({

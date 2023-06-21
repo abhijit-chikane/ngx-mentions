@@ -5,13 +5,15 @@ import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OverviewAComponent } from './overview-a/overview-a.component';
 import { OverviewBComponent } from './overview-b/overview-b.component';
-import { NgxMentionsModule } from 'ngx-mentions';
+import { NgxMentionsModule } from 'projects/ngx-mentions/src/public-api';
 import { RouterModule } from '@angular/router';
+import { OverviewCComponent } from './overview-c/overview-c.component';
 @NgModule({
   declarations: [
     AppComponent,
     OverviewAComponent,
-    OverviewBComponent
+    OverviewBComponent,
+    OverviewCComponent,
   ],
   imports: [
     HttpClientModule,
