@@ -6,6 +6,12 @@
     outline: none;
     resize: none;
     font-family: 'Courier New', Courier, monospace;
+    line-height: 1.3;
+  }
+
+  ::ng-deep.ngx-text-highlight-tag {
+    border-radius: 3px;
+    padding: 0 2px;
   }
 
   ul {

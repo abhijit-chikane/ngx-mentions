@@ -15,13 +15,13 @@ interface Tag {
 }
 
 @Component({
-  selector: 'app-overview-a',
-  templateUrl: './overview-a.component.html',
-  styleUrls: ['./overview-a.component.scss'],
+  selector: 'app-overview-c',
+  templateUrl: './overview-c.component.html',
+  styleUrls: ['./overview-c.component.scss'],
 })
-export class OverviewAComponent implements OnInit {
+export class OverviewCComponent implements OnInit {
   textCtrl: FormControl = new FormControl(
-    '@Amelia #machine-learning test example with multiple trigger characters'
+    '@Amelia #machine-learning tag with customize styling'
   );
   loading = false;
   choices: (User | Tag)[] = [];
@@ -115,14 +115,17 @@ export class OverviewAComponent implements OnInit {
   };
 
   onSelectedChoicesChange(choices: ChoiceWithIndices[]): void {
-    this.mentions = choices;
+    this.mentions = choices.map(choice => ({
+      ...choice,
+      cssClass: choice.indices.triggerCharacter === '#' ? 'hash-highlight-tag' : ''
+    }));
     this.formattedText = getFormattedHighlightText(
       this.textCtrl.value,
       this.mentions,
       parentCommentStatusBasedStyles,
       this.sanitizer
     )
-    console.log('mentions:', this.mentions);
+    console.log('this.mentions', this.mentions);
   }
 
   onMenuShow(): void {
