@@ -9,6 +9,11 @@
     line-height: 1.3;
   }
 
+  ::ng-deep.hash-highlight-tag {
+    background-color: #de41fd;
+    color: #000;
+  }
+
   ::ng-deep.ngx-text-highlight-tag {
     border-radius: 3px;
     padding: 0 2px;
