@@ -165,7 +165,7 @@ export class OverviewBComponent implements OnInit {
             name: 'Queena Gauss',
           },
         ]);
-      }, 600);
+      }, 1000);
     });
   }
 }

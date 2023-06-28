@@ -80,7 +80,8 @@ Name | Description | Output type
 ### @Inputs
 Name | Description | Type | Default
 --- | --- | --- | ---
-`getDisplayLabel` | A function that formats the selected choice once selected. The result (label) is also used as a choice identifier (e.g. when editing choices).  | `(choice: any) => string` | Required
+`getDisplayLabel` | A function that returns the display label for a given choice to display in the dropdown.  | `(choice: any) => string` | Required
+`getDisplayLabelAdditionalInfo` | A function that returns additional information for the display label of a choice to show below the display label as additional text in dropdown. | `(choice: any) => string` | Optional
 `choices` | Pre-set choices to show in dropdown. | `any[]` | `[]`
 
 ### @Outputs
@@ -112,7 +113,9 @@ Name | Description | Output type
   <ng-template #menuTemplate
                let-selectChoice="selectChoice">
     <ngx-text-input-autocomplete-menu [choices]="choices"
+            [ngxLoader]="loading"
             [getDisplayLabel]="getDisplayLabel"
+            [getDisplayLabelAdditionalInfo]="getDisplayLabelAdditionalInfo"
             (selectChoice)="selectChoice($event)">
     </ngx-text-input-autocomplete-menu>
   </ng-template>
@@ -145,7 +148,8 @@ Name | Description | Output type
       ngxKbListNavigation
       [choices]="choices"
       (selectChoice)="selectChoice($event)"
-      [class.loader-only]="!choices.length && loading">
+      [ngxLoader]="loading"
+      [class.loader]="!choices.length && loading">
       <li *ngFor="let user of choices"
         class="ngx-selectable-list-item"
         (click)="selectChoice(user)">

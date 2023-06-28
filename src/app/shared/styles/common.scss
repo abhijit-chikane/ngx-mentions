@@ -1,6 +1,6 @@
 .ngx-selectable-list {
   padding: 0;
-  margin: 8px 0;
+  margin: 6px 0;
   background-color: #f9f9f9;
   z-index: 1;
   border: 1px solid #ccc;
@@ -58,4 +58,10 @@
       }
     }
   }
+}
+
+.formatted-text {
+  margin: 20px 0;
+  font-size: 14px;
+  line-height: 1.4;
 }

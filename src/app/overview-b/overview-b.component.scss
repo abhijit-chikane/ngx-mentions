@@ -15,35 +15,26 @@
   }
 
   ul {
-    width: 13rem;
     background-color: white;
     box-shadow: 0 2px 2px 0 #00000024, 0 3px 1px -2px #00000033, 0 1px 5px 0 #0000001f;
 
-    &.loader-only {
-      height: 2rem;
+    &.loader {
+      height: 24px;
+      box-shadow:  0 5px 10px rgba(0, 0, 0, 0.2);
     }
 
     li:hover {
       background-color: #ffcfff;
     }
 
-    .active {
+    li.active {
       color: #fff;
       background-color: purple;
     }
   }
 
-  .loader {
-    width: 3rem;
-    height: 3rem;
-  }
-
   .highlight-tag {
     background-color: #ffffa2 !important;
     color: #afafff !important;
-  }
-
-  .formatted-text{
-    margin: 20px 0;
   }
 }

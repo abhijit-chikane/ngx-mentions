@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 
 import { ChoiceWithIndices } from './text-input-autocomplete';
 import { HighlightTag, TagMouseEvent } from './text-input-highlight';

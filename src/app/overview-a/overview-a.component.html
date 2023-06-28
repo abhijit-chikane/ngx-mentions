@@ -22,17 +22,19 @@
   <ng-template #menuTemplate
     let-selectChoice="selectChoice">
     <ngx-text-input-autocomplete-menu [choices]="choices"
+      [ngxLoader]="loading"
       [getDisplayLabel]="getDisplayLabel"
       [getDisplayLabelAdditionalInfo]="getDisplayLabelAdditionalInfo"
       (selectChoice)="selectChoice($event)">
     </ngx-text-input-autocomplete-menu>
   </ng-template>
 
-  
-  <div class="formatted-text" [innerHTML]="formattedText"></div>
+
+  <div class="formatted-text"
+    [innerHTML]="formattedText"></div>
 
   <a href="https://github.com/abhijit-chikane/ngx-mentions/tree/master/src/app/overview-a">Github Example Link</a>
-  
+
   <h4>Built in autocomplete menu</h4>
 
 </div>

@@ -197,7 +197,7 @@ export class OverviewAComponent implements OnInit {
             tag: 'machine-learning',
           },
         ]);
-      }, 600);
+      }, 1000);
     });
   }
 
@@ -264,7 +264,7 @@ export class OverviewAComponent implements OnInit {
             name: 'Queena Gauss',
           },
         ]);
-      }, 600);
+      }, 1000);
     });
   }
 }
