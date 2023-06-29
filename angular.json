@@ -126,14 +126,6 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/ngx-mentions/src/test.ts",
-            "tsConfig": "projects/ngx-mentions/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-mentions/karma.conf.js"
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
