@@ -61,19 +61,19 @@ const styleProperties = Object.freeze([
 
 const tagIndexIdPrefix = 'ngx-text-highlight-tag-id-';
 
-function indexIsInsideTag(index: number, tag: HighlightTag) {
+export function indexIsInsideTag(index: number, tag: HighlightTag) {
   return tag.indices.start < index && index < tag.indices.end;
 }
 
-function overlaps(tagA: HighlightTag, tagB: HighlightTag) {
+export function overlaps(tagA: HighlightTag, tagB: HighlightTag) {
   return indexIsInsideTag(tagB.indices.start, tagA) || indexIsInsideTag(tagB.indices.end, tagA);
 }
 
-function isCoordinateWithinRect(rect: ClientRect, x: number, y: number) {
+export function isCoordinateWithinRect(rect: DOMRect, x: number, y: number) {
   return rect.left < x && x < rect.right && rect.top < y && y < rect.bottom;
 }
 
-function escapeHtml(str: string): string {
+export function escapeHtml(str: string): string {
   return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
