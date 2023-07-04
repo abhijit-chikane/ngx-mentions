@@ -22,7 +22,7 @@ import { Component } from '@angular/core';
   styles: [`
   .github-repo {
     text-align: center;
-    margin-top: 1rem;
+    padding-top: 1rem;
   }
   
   .demo-container {

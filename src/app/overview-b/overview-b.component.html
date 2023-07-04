@@ -21,10 +21,11 @@
   <ng-template #menuTemplate
     let-selectChoice="selectChoice">
     <ul class="ngx-selectable-list"
+      [ngxLoader]="loading"
       ngxKbListNavigation
       [choices]="choices"
       (selectChoice)="selectChoice($event)"
-      [class.loader-only]="!choices.length && loading">
+      [class.loader]="!choices.length && loading">
       <li *ngFor="let user of choices"
         class="ngx-selectable-list-item"
         (click)="selectChoice(user)">
@@ -33,8 +34,9 @@
     </ul>
   </ng-template>
 
-  <div class="formatted-text" [innerHTML]="formattedText"></div>
-  
+  <div class="formatted-text"
+    [innerHTML]="formattedText"></div>
+
   <a href="https://github.com/abhijit-chikane/ngx-mentions/tree/master/src/app/overview-b">Github Example Link</a>
 
   <h4> Custom text input autocomplete menu</h4>

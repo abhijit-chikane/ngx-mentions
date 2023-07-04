@@ -1,17 +1,18 @@
-<ul *ngIf="choices?.length"
+<ul *ngIf="choices?.length || ngxLoader"
+    [ngxLoader]="ngxLoader"
+    [class.ngx-selectable-list__loader]="!choices.length && ngxLoader"
     ngxKbListNavigation
     [choices]="choices"
     (selectChoice)="selectChoice.emit($event)"
-    class="ngx-selectable-list"
-    [style.top.px]="position?.top"
-    [style.left.px]="position?.left">
-    <li *ngFor="let choice of choices; trackBy:trackById;"
+    class="ngx-selectable-list">
+    <li *ngFor="let choice of choices"
         (click)="selectChoice.emit(choice)"
         class="ngx-selectable-list-item">
         <div>
             <span> {{getDisplayLabel(choice)}} </span>
         </div>
-        <div *ngIf="getDisplayLabelAdditionalInfo" class="additional-info">
+        <div *ngIf="getDisplayLabelAdditionalInfo"
+            class="additional-info">
             <span> {{getDisplayLabelAdditionalInfo(choice)}} </span>
         </div>
     </li>
